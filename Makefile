@@ -20,7 +20,7 @@ NAME = rtv1
 CC = gcc
 CFLAGS = -Werror -Wextra -Wall
 
-SRC_NAME = main.c event.c color.c raytracing.c \
+SRC_NAME = main.c event.c color.c raytracing.c matrix.c vector.c rotate.c\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft.a
