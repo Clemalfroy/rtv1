@@ -19,6 +19,7 @@
 #include <math.h>
 #include <limits.h>
 #include <float.h>
+#include <pthread.h>
 
 # define EPSILON pow(10,-6)
 # define PI 3.141592653
@@ -27,6 +28,7 @@
 # define HGT 1450
 # define SIGN(a) (a < 0 ? -1 : 1)
 # define MAX(x, y) ((x) < (y) ? (y) : (x))
+# define THREADS 16
 
 typedef struct	s_vec3
 {
@@ -116,6 +118,13 @@ typedef struct	s_env
 	int			redraw;
 }				t_env;
 
+typedef struct	s_param
+{
+	int			begin;
+	int			end;
+	t_env		*env;
+}				t_param;
+
 /*
  ** Draw
  */
@@ -130,7 +139,7 @@ extern int		ft_keyrelease(int key, t_env *env);
 extern int		ft_destroy(t_env *env);
 extern int		ft_loop_hook(t_env *env);
 extern int		ft_expose(t_env *env);
-extern void		ft_raytracing(t_env *env);
+extern void		compute(t_env *env);
 
 /*
  ** Vectors functions

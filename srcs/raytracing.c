@@ -14,10 +14,7 @@
 
 inline static void	ft_intersect(t_env *env, int x, int y)
 {
-	t_vec3 color;
-
-	color = ft_vector_new(150, 150, 150);
-	ft_put_pixel(env, x, y, (int)ft_color(color));
+	ft_put_pixel(env, x, y, 0x0FFFFFF);
 }
 
 inline static void	ft_init_ray(t_env *env, int x, int y)
@@ -38,17 +35,37 @@ inline static void	ft_init_ray(t_env *env, int x, int y)
 		env->ray.dir = v;
 }
 
-inline void			ft_raytracing(t_env *env)
+static inline void	*scanscreen(t_param *p)
 {
-	int		y;
 	int		x;
 
-	y = -1;
-	while (++y < HGT && (x = -1))
+	while (++p->begin < p->end)
+	{
+		x = -1;
 		while (++x < WTH)
 		{
-			env->tmin = 1 / EPSILON;
-			ft_init_ray(env, x, y);
-			ft_intersect(env, x, y);
+			p->env->tmin = 1 / EPSILON;
+			ft_init_ray(p->env, x, p->begin);
+			ft_intersect(p->env, x, p->begin);
 		}
+	}
+	pthread_exit(NULL);
+}
+
+inline void			compute(t_env *env)
+{
+		pthread_t	t[THREADS];
+		int			i;
+		t_param		o[THREADS];
+
+		i = -1;
+		while (++i < THREADS)
+		{
+			o[i].env = env;
+			o[i].begin = (HGT / THREADS) * i;
+			o[i].end = (HGT / THREADS) * (i + 1) + 1;
+			pthread_create(t + i, NULL, (void *(*)(void *))scanscreen, o + i);
+		}
+		while (i-- && pthread_join(t[i], NULL) == 0)
+			;
 }
