@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
-#    Updated: 2017/12/12 18:22:13 by cmalfroy         ###   ########.fr        #
+#    Updated: 2017/12/17 13:36:12 by cmalfroy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ NAME = rtv1
 CC = gcc
 CFLAGS = -Werror -Wextra -Wall
 
-SRC_NAME = main.c vec3.c vec3_nor.c ray.c
+SRC_NAME = main.c vec3.c vec3_nor.c sphere.c event.c\
+		   plane.c color.c shape.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft.a

@@ -6,16 +6,13 @@
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 14:52:16 by cmalfroy          #+#    #+#             */
-/*   Updated: 2017/12/10 11:26:00 by cmalfroy         ###   ########.fr       */
+/*   Updated: 2017/12/13 15:38:53 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILITY_H
 # define UTILITY_H
 
-# define KEYPRESS 2
-# define KEYRELEASE 3
-# define MOTIONNOTIFY 6
 # define KEYPRESSMASK (1L<<0)
 # define KEYRELEASEMASK (1L<<1)
 # define BUTTON3MOTIONMASK (1L<<10)
@@ -40,6 +37,42 @@
 # define POINTERMOTIONHINTMASK (1L<<7)
 # define BUTTON1MOTIONMASK (1L<<8)
 # define BUTTON2MOTIONMASK (1L<<9)
+
+#define NoEventMask 0L
+#define FocusOut 10
+#define KeymapNotify 11
+#define Expose 12
+#define GraphicsExpose 13
+#define NoExpose 14
+#define VisibilityNotify 15
+#define CreateNotify 16
+#define DESTROYNOTIFY 17
+#define UnmapNotify 18
+#define MapNotify 19
+#define KeyPress 2
+#define MapRequest 20
+#define ReparentNotify 21
+#define ConfigureNotify 22
+#define ConfigureRequest 23
+#define GravityNotify 24
+#define ResizeRequest 25
+#define CirculateNotify 26
+#define CirculateRequest 27
+#define PropertyNotify 28
+#define SelectionClear 29
+#define KEYRELEASE 3
+#define SelectionRequest 30
+#define SelectionNotify 31
+#define ColormapNotify 32
+#define ClientMessage 33
+#define MappingNotify 34
+#define LASTEvent 35
+#define ButtonPress 4
+#define ButtonRelease 5
+#define MotionNotify 6
+#define EnterNotify 7
+#define LeaveNotify 8
+#define FocusIn 9
 
 # define KEY_A 0
 # define KEY_S 1

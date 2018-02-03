@@ -6,7 +6,7 @@
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 15:03:21 by cmalfroy          #+#    #+#             */
-/*   Updated: 2017/12/12 16:45:49 by cmalfroy         ###   ########.fr       */
+/*   Updated: 2017/12/14 16:03:41 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,19 @@ inline t_vec3	ft_vec3_nor(t_vec3 v)
 	if ((len = ft_vec3_len(v)) > 0)
 		return (ft_vec3(v.x / len, v.y / len, v.z / len));
 	return (ft_vec3(0, 0, 0));
+}
+
+inline t_vec3 ft_vec3_times(t_vec3 a, double nb)
+{
+	return (ft_vec3(a.x * nb, a.y * nb, a.z * nb));
+}
+
+inline t_vec3 ft_vec3_divnb(t_vec3 a, double nb)
+{
+	return (ft_vec3(a.x / nb, a.y / nb, a.z / nb));
+}
+
+inline t_vec3 ft_vec3_normalize(t_vec3 vec)
+{
+	return (ft_vec3_divnb(vec, ft_vec3_len(vec)));
 }

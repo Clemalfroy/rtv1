@@ -6,7 +6,7 @@
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 14:55:59 by cmalfroy          #+#    #+#             */
-/*   Updated: 2017/12/12 16:47:07 by cmalfroy         ###   ########.fr       */
+/*   Updated: 2017/12/13 17:56:22 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,10 @@ inline t_vec3	ft_vec3_div(t_vec3 a, t_vec3 b)
 	a.y /= b.y;
 	a.z /= b.z;
 	return (a);
+}
+
+inline t_vec3	ft_vec3_cross(t_vec3 a, t_vec3 b)
+{
+	return (ft_vec3(a.y * b.z - b.y * a.z, a.x * b.z - a.z * b.x, a.x * b.y -
+				a.y * b.x));
 }
