@@ -25,6 +25,7 @@
 # define ABS(x) ((x) < 0 ? -(x) : (x))
 # define WTH 1450
 # define HGT 1450
+# define SIGN(a) (a < 0 ? -1 : 1)
 # define MAX(x, y) ((x) < (y) ? (y) : (x))
 
 typedef struct	s_vec3
@@ -108,8 +109,18 @@ typedef struct	s_env
 	double		tmin;
 	double		fov;
 
+	int			hit;
+	int			shd;
+	int			last;
+
 	int			redraw;
 }				t_env;
+
+/*
+ ** Draw
+ */
+
+extern void		ft_put_pixel(t_env *env, int x, int y, int color);
 
 /*
  ** Event handling
@@ -129,7 +140,10 @@ extern double	ft_vector_scale(t_vec3 v1, t_vec3 v2);
 extern t_vec3	ft_vector_new(double x, double y, double z);
 extern t_vec3	ft_vector_add(t_vec3 v1, t_vec3 v2);
 extern t_vec3	ft_vector_sub(t_vec3 v1, t_vec3 v2);
+extern t_vec3	ft_vector_div_norm(t_vec3 vec, double k);
 extern t_vec3	ft_vector_dot(t_vec3 v, double k);
+extern t_vec3	ft_vector_normalize(t_vec3 vec);
+extern t_vec3	ft_neg_vector(t_vec3 vec);
 
 /*
  ** Rotation handlers
@@ -147,5 +161,29 @@ extern void		ft_translate(t_vec3 *vec, t_vec3 trs);
 extern t_mat	ft_matrix_x(double t);
 extern t_mat	ft_matrix_y(double t);
 extern t_mat	ft_matrix_z(double t);
+
+extern double	ft_matrix_det(t_mat mat);
+extern t_mat	ft_matrix_inv(t_mat mat);
+extern t_mat	ft_matrix_mult(t_mat m1, t_mat m2);
+extern t_mat	ft_matrix_cam(t_rot rot);
+
+/*
+ ** Hit handlers
+*/
+
+extern int		ft_hit_cone(t_obj obj, t_ray ray, double *t);
+extern int		ft_hit_sphere(t_obj obj, t_ray ray, double *t);
+extern int		ft_hit_cylinder(t_obj obj, t_ray ray, double *t);
+extern int		ft_hit_plane(t_obj obj, t_ray ray, double *t);
+
+extern int		ft_solve_sph_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
+extern int		ft_solve_cyl_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
+extern int		ft_solve_con_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
+
+/*
+ ** Color function
+*/
+
+extern double	ft_color(t_vec3 color);
 
 #endif

@@ -27,7 +27,7 @@ void		ft_env_cnstr(t_env *env, int argc, char **argv)
 	env->fov = 60;
 }
 
-void		ft_put_pixel(t_env *env, int x, int y, int color)
+inline void		ft_put_pixel(t_env *env, int x, int y, int color)
 {
 	if (y >= HGT || x >= WTH || x < 0 || y < 0)
 		return ;
@@ -40,6 +40,8 @@ int			main(int argc, char **argv)
 	t_env e;
 
 	ft_env_cnstr(&e, argc, argv);
+	ft_raytracing(&e);
+	mlx_put_image_to_window(e.mlx.mlx, e.mlx.win, e.img.img, 0, 0);
 	mlx_hook(e.mlx.win, KEYRELEASE, KEYRELEASEMASK, ft_keyrelease, &e);
 	mlx_hook(e.mlx.win, DESTROYNOTIFY, 0, ft_destroy, &e);
 	mlx_expose_hook(e.mlx.win, ft_expose, &e);

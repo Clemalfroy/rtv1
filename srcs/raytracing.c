@@ -12,6 +12,14 @@
 
 #include "rt.h"
 
+inline static void	ft_intersect(t_env *env, int x, int y)
+{
+	t_vec3 color;
+
+	color = ft_vector_new(150, 150, 150);
+	ft_put_pixel(env, x, y, (int)ft_color(color));
+}
+
 inline static void	ft_init_ray(t_env *env, int x, int y)
 {
 	t_vec3	v;
@@ -41,5 +49,6 @@ inline void			ft_raytracing(t_env *env)
 		{
 			env->tmin = 1 / EPSILON;
 			ft_init_ray(env, x, y);
+			ft_intersect(env, x, y);
 		}
 }

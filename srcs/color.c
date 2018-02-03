@@ -12,29 +12,22 @@
 
 #include "rt.h"
 
-double		ft_color(t_vec3 color)
+inline double	ft_color(t_vec3 color)
 {
 	int r;
 	int g;
 	int b;
-	int result;
+	double result;
 
-	r = color.x <= 0 ? 0 : color.x * 255;
-	g = color.y <= 0 ? 0 : color.y * 255;
-	b = color.z <= 0 ? 0 : color.z * 255;
-	r = color.x >= 1 ? 255 : color.x * 255;
-	g = color.y >= 1 ? 255 : color.y * 255;
-	b = color.z >= 1 ? 255 : color.z * 255;
+	r = color.x <= 0 ? 0 : (int)color.x * 255;
+	g = color.y <= 0 ? 0 : (int)color.y * 255;
+	b = color.z <= 0 ? 0 : (int)color.z * 255;
+	r = color.x >= 1 ? 255 : (int)color.x * 255;
+	g = color.y >= 1 ? 255 : (int)color.y * 255;
+	b = color.z >= 1 ? 255 : (int)color.z * 255;
 	result = 0;
 	result += r << 16;
 	result += g << 8;
 	result += b;
 	return (result);
-}
-
-double		ft_max(float a, float b)
-{
-	if (a > b)
-		return (a);
-	return (b);
 }
