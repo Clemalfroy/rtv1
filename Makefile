@@ -5,7 +5,7 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
+#    Created: 2016/01/11 12:36:55 by cmalfroy          #+#    #+#              #
 #    Updated: 2017/12/17 13:36:12 by cmalfroy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
@@ -20,8 +20,8 @@ NAME = rtv1
 CC = gcc
 CFLAGS = -Werror -Wextra -Wall
 
-SRC_NAME = main.c vec3.c vec3_nor.c sphere.c event.c\
-		   plane.c color.c shape.c
+SRC_NAME = main.c event.c color.c raytracing.c matrix.c vector.c rotate.c \
+matrix2.c vector2.c light.c hit.c quadra.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft.a
@@ -36,7 +36,8 @@ all: $(NAME)
 
 $(NAME): $(OBJ) Makefile
 	@make -C $(LIB_PATH)
-	@$(CC) $(CFLAGS) $(LIB) $(INC_LIBFT) $(INC) $(OBJ) -o $(NAME) -lmlx -framework OpenGL -framework AppKit -lpthread
+	@$(CC) $(CFLAGS) $(LIB) $(INC_LIBFT) $(INC) $(OBJ) -o $(NAME) -lmlx \
+	-framework OpenGL -framework AppKit -lpthread
 	@echo  "Compilation of : \033[32;1;4;5m$(NAME)\033[0m : Successfull"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
