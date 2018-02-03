@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event.c                                            :+:      :+:    :+:   */
+/*   raytracing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,34 @@
 
 #include "rt.h"
 
-inline int		ft_loop_hook(t_env *env)
+inline static void	ft_init_ray(t_env *env, int x, int y)
 {
-	if (env->redraw)
-	{
-		mlx_put_image_to_window(env->mlx.mlx, env->mlx.win, env->img.img, 0, 0);
-		env->redraw = 0;
-	}
-	return (0);
+	t_vec3	v;
+
+	env->ray.pos = env->cam.pos;
+	v.x = (x + 0.5) / WTH;
+	v.y = (y + 0.5) / HGT;
+	v.x = (2 * v.x) - 1;
+	v.y = 1 - (2 * v.y);
+	v.x *= (WTH / (double)HGT) * tan((env->fov / 2) * PI / 180);
+	v.y *= tan((env->fov / 2) * PI / 180);
+	v.z = 1;
+	if (env->cam.mat.ex)
+		env->ray.dir = ft_rotate_cam(v, env->cam.mat);
+	else
+		env->ray.dir = v;
 }
 
-inline int		ft_expose(t_env *env)
+inline void			ft_raytracing(t_env *env)
 {
-	env->redraw = 1;
-	return (0);
-}
+	int		y;
+	int		x;
 
-inline int		ft_keyrelease(int key, t_env *env)
-{
-	if (key == KEY_ESC)
-	{
-		mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-		exit(0);
-	}
-	return (1);
-}
-
-inline int		ft_destroy(t_env *env)
-{
-	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	exit(0);
-	return (1);
+	y = -1;
+	while (++y < HGT && (x = -1))
+		while (++x < WTH)
+		{
+			env->tmin = 1 / EPSILON;
+			ft_init_ray(env, x, y);
+		}
 }

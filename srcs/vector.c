@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event.c                                            :+:      :+:    :+:   */
+/*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,50 @@
 
 #include "rt.h"
 
-inline int		ft_loop_hook(t_env *env)
+inline double		ft_vector_scale(t_vec3 v1, t_vec3 v2)
 {
-	if (env->redraw)
-	{
-		mlx_put_image_to_window(env->mlx.mlx, env->mlx.win, env->img.img, 0, 0);
-		env->redraw = 0;
-	}
-	return (0);
+	double	res;
+
+	res = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+	return (res);
 }
 
-inline int		ft_expose(t_env *env)
+inline t_vec3		ft_vector_new(double x, double y, double z)
 {
-	env->redraw = 1;
-	return (0);
+	t_vec3	res;
+
+	res.x = x;
+	res.y = y;
+	res.z = z;
+	return (res);
 }
 
-inline int		ft_keyrelease(int key, t_env *env)
+inline t_vec3		ft_vector_add(t_vec3 v1, t_vec3 v2)
 {
-	if (key == KEY_ESC)
-	{
-		mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-		exit(0);
-	}
-	return (1);
+	t_vec3	res;
+
+	res.x = v1.x + v2.x;
+	res.y = v1.y + v2.y;
+	res.z = v1.z + v2.z;
+	return (res);
 }
 
-inline int		ft_destroy(t_env *env)
+inline t_vec3		ft_vector_sub(t_vec3 v1, t_vec3 v2)
 {
-	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	exit(0);
-	return (1);
+	t_vec3	res;
+
+	res.x = v1.x - v2.x;
+	res.y = v1.y - v2.y;
+	res.z = v1.z - v2.z;
+	return (res);
+}
+
+inline t_vec3		ft_vector_dot(t_vec3 v, double k)
+{
+	t_vec3	res;
+
+	res.x = v.x * k;
+	res.y = v.y * k;
+	res.z = v.z * k;
+	return (res);
 }

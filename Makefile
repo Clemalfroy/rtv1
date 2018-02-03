@@ -20,7 +20,7 @@ NAME = rtv1
 CC = gcc
 CFLAGS = -Werror -Wextra -Wall
 
-SRC_NAME = main.c event.c color.c \
+SRC_NAME = main.c event.c color.c raytracing.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft.a
@@ -35,7 +35,8 @@ all: $(NAME)
 
 $(NAME): $(OBJ) Makefile
 	@make -C $(LIB_PATH)
-	@$(CC) $(CFLAGS) $(LIB) $(INC_LIBFT) $(INC) $(OBJ) -o $(NAME) -lmlx -framework OpenGL -framework AppKit -lpthread
+	@$(CC) $(CFLAGS) $(LIB) $(INC_LIBFT) $(INC) $(OBJ) -o $(NAME) -lmlx \
+	-framework OpenGL -framework AppKit -lpthread
 	@echo  "Compilation of : \033[32;1;4;5m$(NAME)\033[0m : Successfull"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
