@@ -38,11 +38,19 @@ static void	ft_hit_objects(t_env *env)
 
 inline static void	ft_intersect(t_env *env, int x, int y)
 {
+	double lamb;
+
 	env->hit = 0;
 	env->current = -1;
 	ft_hit_objects(env);
 	if (env->hit)
+	{
+		lamb = ft_lambert(env);
+		env->obj[env->last].color.x *= lamb;
+		env->obj[env->last].color.y *= lamb;
+		env->obj[env->last].color.z *= lamb;
 		ft_put_pixel(env, x, y, ft_color(env->obj[env->last].color));
+	}
 }
 
 inline static void	ft_init_ray(t_env *env, int x, int y)

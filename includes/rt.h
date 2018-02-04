@@ -104,7 +104,7 @@ typedef struct	s_env
 	t_mlx		mlx;
 	t_img		img;
 	t_obj		*obj;
-	t_light		lgt;
+	t_light		light;
 	t_cam		cam;
 	t_ray		ray;
 
@@ -188,6 +188,12 @@ extern int		ft_hit_plane(t_obj obj, t_ray ray, double *t);
 extern int		ft_solve_sph_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
 extern int		ft_solve_cyl_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
 extern int		ft_solve_con_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
+
+/*
+ ** light functions
+ */
+
+extern double	ft_lambert(t_env *env);
 
 /*
  ** Create objects functions
