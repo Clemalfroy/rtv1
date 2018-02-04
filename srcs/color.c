@@ -12,12 +12,12 @@
 
 #include "rt.h"
 
-inline double	ft_color(t_vec3 color)
+inline int	ft_color(t_vec3 color)
 {
 	int r;
 	int g;
 	int b;
-	double result;
+	int result;
 
 	r = color.x <= 0 ? 0 : (int)color.x * 255;
 	g = color.y <= 0 ? 0 : (int)color.y * 255;

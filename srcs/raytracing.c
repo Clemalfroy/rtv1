@@ -12,27 +12,55 @@
 
 #include "rt.h"
 
+static void	ft_hit_objects(t_env *env)
+{
+	double	t;
+
+	t = 1 / EPSILON;
+	while (++env->current < env->nbobj)
+	{
+		if (env->obj[env->current].type == 1)
+			ft_hit_sphere(env->obj[env->current], env->ray, &t);
+		else if (env->obj[env->current].type == 2)
+			ft_hit_cylinder(env->obj[env->current], env->ray, &t);
+		else if (env->obj[env->current].type == 3)
+			ft_hit_cone(env->obj[env->current], env->ray, &t);
+		else if (env->obj[env->current].type == 4)
+			ft_hit_plane(env->obj[env->current], env->ray, &t);
+		if (env->tmin > t)
+		{
+			env->hit = 1;
+			env->tmin = t;
+			env->last = env->current;
+		}
+	}
+}
+
 inline static void	ft_intersect(t_env *env, int x, int y)
 {
-	ft_put_pixel(env, x, y, 0x0FFFFFF);
+	env->hit = 0;
+	env->current = -1;
+	ft_hit_objects(env);
+	if (env->hit)
+		ft_put_pixel(env, x, y, ft_color(env->obj[env->last].color));
 }
 
 inline static void	ft_init_ray(t_env *env, int x, int y)
 {
-	t_vec3	v;
+	t_vec3	dir;
 
 	env->ray.pos = env->cam.pos;
-	v.x = (x + 0.5) / WTH;
-	v.y = (y + 0.5) / HGT;
-	v.x = (2 * v.x) - 1;
-	v.y = 1 - (2 * v.y);
-	v.x *= (WTH / (double)HGT) * tan((env->fov / 2) * PI / 180);
-	v.y *= tan((env->fov / 2) * PI / 180);
-	v.z = 1;
+	dir.x = (x + 0.5) / WTH;
+	dir.y = (y + 0.5) / HGT;
+	dir.x = (2 * dir.x) - 1;
+	dir.y = 1 - (2 * dir.y);
+	dir.x *= (WTH / (double)HGT) * tan((env->fov / 2) * PI / 180);
+	dir.y *= tan((env->fov / 2) * PI / 180);
+	dir.z = 1;
 	if (env->cam.mat.ex)
-		env->ray.dir = ft_rotate_cam(v, env->cam.mat);
+		env->ray.dir = ft_rotate_cam(dir, env->cam.mat);
 	else
-		env->ray.dir = v;
+		env->ray.dir = dir;
 }
 
 static inline void	*scanscreen(t_param *p)

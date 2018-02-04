@@ -114,6 +114,8 @@ typedef struct	s_env
 	int			hit;
 	int			shd;
 	int			last;
+	int 		nbobj;
+	int 		current;
 
 	int			redraw;
 }				t_env;
@@ -193,6 +195,6 @@ extern int		ft_solve_con_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
  ** Color function
 */
 
-extern double	ft_color(t_vec3 color);
+extern int		ft_color(t_vec3 color);
 
 #endif
