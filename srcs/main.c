@@ -12,19 +12,18 @@
 
 #include "rt.h"
 
-void		ft_env_cnstr(t_env *env, int argc, char **argv)
+static void		ft_env_cnstr(t_env *env, int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
 	ft_memset(env, 0, sizeof(t_env));
-	ft_memset(&env->mlx, 0, sizeof(t_mlx));
-	ft_memset(&env->img, 0, sizeof(t_img));
 	env->mlx.mlx = mlx_init();
 	env->mlx.win = mlx_new_window(env->mlx.mlx, WTH, HGT, "Rtv1");
 	env->img.img = mlx_new_image(env->mlx.mlx, WTH, HGT);
 	env->img.i_img = mlx_get_data_addr(env->img.img, &env->img.bpp,
 		&env->img.size_l, &env->img.endian);
 	env->fov = 60;
+	env->obj = ft_create_tabobjects(env);
 }
 
 inline void		ft_put_pixel(t_env *env, int x, int y, int color)

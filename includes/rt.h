@@ -110,22 +110,20 @@ typedef struct	s_env
 
 	double		tmin;
 	double		fov;
-
 	int			hit;
 	int			shd;
 	int			last;
 	int 		nbobj;
 	int 		current;
-
 	int			redraw;
 }				t_env;
 
-typedef struct	s_param
+typedef struct	s_thread
 {
 	int			begin;
 	int			end;
-	t_env		*env;
-}				t_param;
+	t_env		env;
+}				t_thread;
 
 /*
  ** Draw
@@ -190,6 +188,12 @@ extern int		ft_hit_plane(t_obj obj, t_ray ray, double *t);
 extern int		ft_solve_sph_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
 extern int		ft_solve_cyl_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
 extern int		ft_solve_con_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
+
+/*
+ ** Create objects functions
+*/
+
+extern t_obj	*ft_create_tabobjects(t_env *env);
 
 /*
  ** Color function

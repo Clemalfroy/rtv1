@@ -12,36 +12,12 @@
 
 #include "rt.h"
 
-inline int		ft_loop_hook(t_env *env)
+inline t_obj		*ft_create_tabobjects(t_env *env)
 {
-	if (env->redraw)
-	{
-		mlx_put_image_to_window(env->mlx.mlx, env->mlx.win, env->img.img, 0, 0);
-		env->redraw = 0;
-	}
-	return (0);
-}
+	t_obj	*obj;
 
-inline int		ft_expose(t_env *env)
-{
-	env->redraw = 1;
-	return (0);
-}
-
-inline int		ft_keyrelease(int key, t_env *env)
-{
-	if (key == KEY_ESC)
-	{
-		mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-		free(env->obj);
-		exit(0);
-	}
-	return (1);
-}
-
-inline int		ft_destroy(t_env *env)
-{
-	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	free(env->obj);
-	exit(0);
+	env->nbobj = 1; //a supprimer later quand on aura le bon nombre
+	if (!(obj = (t_obj *)malloc(sizeof(t_obj))) * env->nbobj)
+		exit(-1);
+	return (obj);
 }

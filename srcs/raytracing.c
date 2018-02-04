@@ -63,18 +63,18 @@ inline static void	ft_init_ray(t_env *env, int x, int y)
 		env->ray.dir = dir;
 }
 
-static inline void	*scanscreen(t_param *p)
+static inline void	*scanscreen(t_thread *thrd)
 {
 	int		x;
 
-	while (++p->begin < p->end)
+	while (++thrd->begin < thrd->end)
 	{
 		x = -1;
 		while (++x < WTH)
 		{
-			p->env->tmin = 1 / EPSILON;
-			ft_init_ray(p->env, x, p->begin);
-			ft_intersect(p->env, x, p->begin);
+			thrd->env.tmin = 1 / EPSILON;
+			ft_init_ray(&thrd->env, x, thrd->begin);
+			ft_intersect(&thrd->env, x, thrd->begin);
 		}
 	}
 	pthread_exit(NULL);
@@ -84,12 +84,12 @@ inline void			compute(t_env *env)
 {
 		pthread_t	t[THREADS];
 		int			i;
-		t_param		o[THREADS];
+		t_thread		o[THREADS];
 
 		i = -1;
 		while (++i < THREADS)
 		{
-			o[i].env = env;
+			ft_memcpy(&o[i].env, env, sizeof(t_env));
 			o[i].begin = (HGT / THREADS) * i;
 			o[i].end = (HGT / THREADS) * (i + 1) + 1;
 			pthread_create(t + i, NULL, (void *(*)(void *))scanscreen, o + i);
