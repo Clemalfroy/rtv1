@@ -22,7 +22,7 @@ inline double		vec3_getdst(t_vec3 vec)
 	return (res);
 }
 
-inline static int			ft_shadow(t_env *env)
+inline static int	shadow(t_env *env)
 {
 	int		h;
 	double	t;
@@ -70,7 +70,7 @@ inline double			lb_light(t_env *env)
 		res = 0.2;
 	if (env->shd)
 	{
-		if (!ft_shadow(env))
+		if (!shadow(env))
 			res = 0.15;
 	}
 	if (res > 1)

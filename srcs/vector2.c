@@ -17,6 +17,7 @@ inline t_vec3			vec3_normalize(t_vec3 vec)
 	t_vec3		res;
 	double		len;
 
+	res = vec;
 	len = sqrt(vec3_scale(vec, vec));
 	len = 1 / len;
 	res.x *= len;

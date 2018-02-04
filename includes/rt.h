@@ -38,13 +38,6 @@ typedef struct	s_vec3
 	double		z;
 }				t_vec3;
 
-typedef struct	s_rot
-{
-	double		j;
-	double		p;
-	double		y;
-}				t_rot;
-
 typedef struct	s_mat
 {
 	int			ex;
@@ -70,7 +63,7 @@ typedef struct	s_light
 typedef struct	s_cam
 {
 	t_vec3		pos;
-	t_rot		rot;
+	t_vec3		rot;
 	t_mat		mat;
 }				t_cam;
 
@@ -176,7 +169,7 @@ extern t_mat	matrix_z(double t);
 extern double	matrix_det(t_mat mat);
 extern t_mat	matrix_inv(t_mat mat);
 extern t_mat	matrix_mult(t_mat m1, t_mat m2);
-extern t_mat	matrix_cam(t_rot rot);
+extern t_mat	matrix_cam(t_vec3 rot);
 
 /*
  ** Hit handlers

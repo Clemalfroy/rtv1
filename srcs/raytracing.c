@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-static void	ft_hit_objects(t_env *env)
+static void	rt_hitobjects(t_env *env)
 {
 	double	t;
 
@@ -42,7 +42,7 @@ inline static void	rayintersect(t_env *env, int x, int y)
 
 	env->hit = 0;
 	env->current = -1;
-	ft_hit_objects(env);
+	rt_hitobjects(env);
 	if (env->hit)
 	{
 		lamb = lb_light(env);

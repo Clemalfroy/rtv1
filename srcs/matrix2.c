@@ -77,15 +77,15 @@ inline t_mat		matrix_mult(t_mat m1, t_mat m2)
 	return (res);
 }
 
-inline t_mat		matrix_cam(t_rot rot)
+inline t_mat		matrix_cam(t_vec3 rot)
 {
 	t_mat	mat;
 
-	mat.r1 = vec3_new(-cos(rot.p) * sin(rot.j), cos(rot.j),
-		sin(rot.p) * sin(rot.j));
-	mat.r2 = vec3_new(sin(rot.p), 0, cos(rot.p));
-	mat.r3 = vec3_new(cos(rot.p) * cos(rot.j), sin(rot.j),
-		-sin(rot.p) * cos(rot.j));
+	mat.r1 = vec3_new(-cos(rot.y) * sin(rot.x), cos(rot.x),
+		sin(rot.y) * sin(rot.x));
+	mat.r2 = vec3_new(sin(rot.y), 0, cos(rot.y));
+	mat.r3 = vec3_new(cos(rot.y) * cos(rot.x), sin(rot.x),
+		-sin(rot.y) * cos(rot.x));
 	mat.ex = 1;
 	return (mat);
 }
