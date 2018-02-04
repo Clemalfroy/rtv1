@@ -13,7 +13,7 @@
 
 #include "rt.h"
 
-inline int	ft_solve_sph_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
+inline int	rt_solvesphquadra(t_shape obj, t_ray ray, double *t1, double *t2)
 {
 	t_vec3	v;
 	double	a;
@@ -21,10 +21,10 @@ inline int	ft_solve_sph_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
 	double	c;
 	double	disc;
 
-	v = ft_vector_sub(ray.pos, obj.center);
-	a = ft_vector_scale(ray.dir, ray.dir);
-	b = 2.0 * ft_vector_scale(ray.dir, v);
-	c = ft_vector_scale(v, v) - obj.radius;
+	v = vec3_sub(ray.pos, obj.center);
+	a = vec3_scale(ray.dir, ray.dir);
+	b = 2.0 * vec3_scale(ray.dir, v);
+	c = vec3_scale(v, v) - obj.radius;
 	disc = (b * b) - (4.0 * a * c);
 	if (disc < 0.0)
 		return (0);
@@ -36,7 +36,7 @@ inline int	ft_solve_sph_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
 	}
 }
 
-inline int	ft_solve_cyl_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
+inline int	rt_solvecylquadra(t_shape obj, t_ray ray, double *t1, double *t2)
 {
 	t_vec3	v;
 	double	a;
@@ -45,8 +45,8 @@ inline int	ft_solve_cyl_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
 	double	disc;
 
 	if (obj.rot.ex)
-		ray = ft_rotate_ray(ray, obj.inv);
-	v = ft_vector_sub(ray.pos, obj.center);
+		ray = rotateray(ray, obj.inv);
+	v = vec3_sub(ray.pos, obj.center);
 	a = ray.dir.x * ray.dir.x + ray.dir.z * ray.dir.z;
 	b = 2.0 * ray.dir.x * v.x + 2.0 * ray.dir.z * v.z;
 	c = (v.x * v.x + v.z * v.z) - obj.radius;
@@ -61,7 +61,7 @@ inline int	ft_solve_cyl_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
 	}
 }
 
-inline int	ft_solve_con_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
+inline int	rt_solveconquadra(t_shape obj, t_ray ray, double *t1, double *t2)
 {
 	t_vec3	v;
 	double	a;
@@ -70,8 +70,8 @@ inline int	ft_solve_con_quadra(t_obj obj, t_ray ray, double *t1, double *t2)
 	double	disc;
 
 	if (obj.rot.ex)
-		ray = ft_rotate_ray(ray, obj.inv);
-	v = ft_vector_sub(ray.pos, obj.center);
+		ray = rotateray(ray, obj.inv);
+	v = vec3_sub(ray.pos, obj.center);
 	a = (ray.dir.x * ray.dir.x + ray.dir.z * ray.dir.z)
 		- (obj.radius * ray.dir.y * ray.dir.y);
 	b = 2.0 * ((ray.dir.x * v.x + ray.dir.z * v.z)

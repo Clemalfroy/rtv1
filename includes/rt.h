@@ -28,6 +28,7 @@
 # define HGT 1450
 # define SIGN(a) (a < 0 ? -1 : 1)
 # define MAX(x, y) ((x) < (y) ? (y) : (x))
+#define RGB(r,g,b) (((char)(r)|((int)((char)(g))<<8))|(((long)(char)(b))<<16))
 # define THREADS 16
 
 typedef struct	s_vec3
@@ -73,7 +74,7 @@ typedef struct	s_cam
 	t_mat		mat;
 }				t_cam;
 
-typedef struct	s_obj
+typedef struct	s_shape
 {
 	double		radius;
 	t_vec3		center;
@@ -82,7 +83,7 @@ typedef struct	s_obj
 	t_mat		inv;
 	t_mat		rot;
 	int			type;
-}				t_obj;
+}				t_shape;
 
 typedef struct	s_mlx
 {
@@ -103,7 +104,7 @@ typedef struct	s_env
 {
 	t_mlx		mlx;
 	t_img		img;
-	t_obj		*obj;
+	t_shape		*shapes;
 	t_light		light;
 	t_cam		cam;
 	t_ray		ray;
@@ -113,7 +114,7 @@ typedef struct	s_env
 	int			hit;
 	int			shd;
 	int			last;
-	int 		nbobj;
+	int 		nbshape;
 	int 		current;
 	int			redraw;
 }				t_env;
@@ -129,82 +130,89 @@ typedef struct	s_thread
  ** Draw
  */
 
-extern void		ft_put_pixel(t_env *env, int x, int y, int color);
+extern void		putpixel(t_env *env, int x, int y, int color);
 
 /*
  ** Event handling
 */
 
-extern int		ft_keyrelease(int key, t_env *env);
-extern int		ft_destroy(t_env *env);
-extern int		ft_loop_hook(t_env *env);
-extern int		ft_expose(t_env *env);
+extern int		e_keyrelease(int key, t_env *env);
+extern int		e_destroy(t_env *env);
+extern int		e_loophook(t_env *env);
+extern int		e_expose(t_env *env);
 extern void		compute(t_env *env);
 
 /*
  ** Vectors functions
 */
 
-extern double	ft_vector_scale(t_vec3 v1, t_vec3 v2);
-extern t_vec3	ft_vector_new(double x, double y, double z);
-extern t_vec3	ft_vector_add(t_vec3 v1, t_vec3 v2);
-extern t_vec3	ft_vector_sub(t_vec3 v1, t_vec3 v2);
-extern t_vec3	ft_vector_div_norm(t_vec3 vec, double k);
-extern t_vec3	ft_vector_dot(t_vec3 v, double k);
-extern t_vec3	ft_vector_normalize(t_vec3 vec);
-extern t_vec3	ft_neg_vector(t_vec3 vec);
+extern double	vec3_scale(t_vec3 v1, t_vec3 v2);
+extern double	vec3_getdst(t_vec3 vec);
+extern t_vec3	vec3_new(double x, double y, double z);
+extern t_vec3	vec3_add(t_vec3 v1, t_vec3 v2);
+extern t_vec3	vec3_sub(t_vec3 v1, t_vec3 v2);
+extern t_vec3	vec3_divnorm(t_vec3 vec, double k);
+extern t_vec3	vec3_dot(t_vec3 v, double k);
+extern t_vec3	vec3_normalize(t_vec3 vec);
+extern t_vec3	vec3_neg(t_vec3 vec);
 
 /*
  ** Rotation handlers
 */
 
-extern t_vec3	ft_rotate(t_vec3 vec, t_mat mat);
-extern t_ray	ft_rotate_ray(t_ray ray, t_mat mat);
-extern t_vec3	ft_rotate_cam(t_vec3 vec, t_mat mat);
-extern void		ft_translate(t_vec3 *vec, t_vec3 trs);
+extern t_vec3	rotate(t_vec3 vec, t_mat mat);
+extern t_ray	rotateray(t_ray ray, t_mat mat);
+extern t_vec3	rotatecam(t_vec3 vec, t_mat mat);
+extern void		translate(t_vec3 *vec, t_vec3 trs);
 
 /*
  ** Matrix handlers
 */
 
-extern t_mat	ft_matrix_x(double t);
-extern t_mat	ft_matrix_y(double t);
-extern t_mat	ft_matrix_z(double t);
+extern t_mat	matrix_x(double t);
+extern t_mat	matrix_y(double t);
+extern t_mat	matrix_z(double t);
 
-extern double	ft_matrix_det(t_mat mat);
-extern t_mat	ft_matrix_inv(t_mat mat);
-extern t_mat	ft_matrix_mult(t_mat m1, t_mat m2);
-extern t_mat	ft_matrix_cam(t_rot rot);
+extern double	matrix_det(t_mat mat);
+extern t_mat	matrix_inv(t_mat mat);
+extern t_mat	matrix_mult(t_mat m1, t_mat m2);
+extern t_mat	matrix_cam(t_rot rot);
 
 /*
  ** Hit handlers
 */
 
-extern int		ft_hit_cone(t_obj obj, t_ray ray, double *t);
-extern int		ft_hit_sphere(t_obj obj, t_ray ray, double *t);
-extern int		ft_hit_cylinder(t_obj obj, t_ray ray, double *t);
-extern int		ft_hit_plane(t_obj obj, t_ray ray, double *t);
+extern int		rt_hitcone(t_shape obj, t_ray ray, double *t);
+extern int		rt_hitsphere(t_shape obj, t_ray ray, double *t);
+extern int		rt_hitcylinder(t_shape obj, t_ray ray, double *t);
+extern int		rt_hitplane(t_shape obj, t_ray ray, double *t);
 
-extern int		ft_solve_sph_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
-extern int		ft_solve_cyl_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
-extern int		ft_solve_con_quadra(t_obj obj, t_ray ray, double *t1, double *t2);
+extern int		rt_solvesphquadra(t_shape obj, t_ray ray, double *t1, double *t2);
+extern int		rt_solvecylquadra(t_shape obj, t_ray ray, double *t1, double *t2);
+extern int		rt_solveconquadra(t_shape obj, t_ray ray, double *t1, double *t2);
 
 /*
  ** light functions
  */
 
-extern double	ft_lambert(t_env *env);
+extern double	lb_light(t_env *env);
 
 /*
  ** Create objects functions
 */
 
-extern t_obj	*ft_create_tabobjects(t_env *env);
+extern t_shape	*shape(t_env *env);
 
 /*
  ** Color function
 */
 
-extern int		ft_color(t_vec3 color);
+extern int		rgbtoint(t_vec3 color);
+
+/*
+ * exit
+*/
+
+void 			mlx_exit(t_env *env, int code);
 
 #endif

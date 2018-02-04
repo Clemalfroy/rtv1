@@ -12,12 +12,12 @@
 
 #include "rt.h"
 
-inline t_vec3			ft_vector_normalize(t_vec3 vec)
+inline t_vec3			vec3_normalize(t_vec3 vec)
 {
 	t_vec3		res;
 	double		len;
 
-	len = sqrt(ft_vector_scale(vec, vec));
+	len = sqrt(vec3_scale(vec, vec));
 	len = 1 / len;
 	res.x *= len;
 	res.y *= len;
@@ -25,7 +25,7 @@ inline t_vec3			ft_vector_normalize(t_vec3 vec)
 	return (res);
 }
 
-inline t_vec3			ft_neg_vector(t_vec3 vec)
+inline t_vec3			vec3_neg(t_vec3 vec)
 {
 	t_vec3		res;
 
@@ -35,7 +35,7 @@ inline t_vec3			ft_neg_vector(t_vec3 vec)
 	return (res);
 }
 
-inline t_vec3			ft_vector_div_norm(t_vec3 vec, double k)
+inline t_vec3			vec3_divnorm(t_vec3 vec, double k)
 {
 	t_vec3		res;
 

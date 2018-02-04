@@ -17,16 +17,16 @@ static void	ft_hit_objects(t_env *env)
 	double	t;
 
 	t = 1 / EPSILON;
-	while (++env->current < env->nbobj)
+	while (++env->current < env->nbshape)
 	{
-		if (env->obj[env->current].type == 1)
-			ft_hit_sphere(env->obj[env->current], env->ray, &t);
-		else if (env->obj[env->current].type == 2)
-			ft_hit_cylinder(env->obj[env->current], env->ray, &t);
-		else if (env->obj[env->current].type == 3)
-			ft_hit_cone(env->obj[env->current], env->ray, &t);
-		else if (env->obj[env->current].type == 4)
-			ft_hit_plane(env->obj[env->current], env->ray, &t);
+		if (env->shapes[env->current].type == 1)
+			rt_hitsphere(env->shapes[env->current], env->ray, &t);
+		else if (env->shapes[env->current].type == 2)
+			rt_hitcylinder(env->shapes[env->current], env->ray, &t);
+		else if (env->shapes[env->current].type == 3)
+			rt_hitcone(env->shapes[env->current], env->ray, &t);
+		else if (env->shapes[env->current].type == 4)
+			rt_hitplane(env->shapes[env->current], env->ray, &t);
 		if (env->tmin > t)
 		{
 			env->hit = 1;
@@ -36,7 +36,7 @@ static void	ft_hit_objects(t_env *env)
 	}
 }
 
-inline static void	ft_intersect(t_env *env, int x, int y)
+inline static void	rayintersect(t_env *env, int x, int y)
 {
 	double lamb;
 
@@ -45,15 +45,15 @@ inline static void	ft_intersect(t_env *env, int x, int y)
 	ft_hit_objects(env);
 	if (env->hit)
 	{
-		lamb = ft_lambert(env);
-		env->obj[env->last].color.x *= lamb;
-		env->obj[env->last].color.y *= lamb;
-		env->obj[env->last].color.z *= lamb;
-		ft_put_pixel(env, x, y, ft_color(env->obj[env->last].color));
+		lamb = lb_light(env);
+		env->shapes[env->last].color.x *= lamb;
+		env->shapes[env->last].color.y *= lamb;
+		env->shapes[env->last].color.z *= lamb;
+		putpixel(env, x, y, rgbtoint(env->shapes[env->last].color));
 	}
 }
 
-inline static void	ft_init_ray(t_env *env, int x, int y)
+inline static void	rayinit(t_env *env, int x, int y)
 {
 	t_vec3	dir;
 
@@ -66,7 +66,7 @@ inline static void	ft_init_ray(t_env *env, int x, int y)
 	dir.y *= tan((env->fov / 2) * PI / 180);
 	dir.z = 1;
 	if (env->cam.mat.ex)
-		env->ray.dir = ft_rotate_cam(dir, env->cam.mat);
+		env->ray.dir = rotatecam(dir, env->cam.mat);
 	else
 		env->ray.dir = dir;
 }
@@ -81,8 +81,8 @@ static inline void	*scanscreen(t_thread *thrd)
 		while (++x < WTH)
 		{
 			thrd->env.tmin = 1 / EPSILON;
-			ft_init_ray(&thrd->env, x, thrd->begin);
-			ft_intersect(&thrd->env, x, thrd->begin);
+			rayinit(&thrd->env, x, thrd->begin);
+			rayintersect(&thrd->env, x, thrd->begin);
 		}
 	}
 	pthread_exit(NULL);

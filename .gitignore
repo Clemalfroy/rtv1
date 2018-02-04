@@ -1,4 +1,4 @@
 rtv1
 *.o
 *.a
-*/obj/*
+*/shape/*

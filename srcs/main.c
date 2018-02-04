@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-static void		ft_env_cnstr(t_env *env, int argc, char **argv)
+static void		envctor(t_env *env, int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
@@ -23,10 +23,10 @@ static void		ft_env_cnstr(t_env *env, int argc, char **argv)
 	env->img.i_img = mlx_get_data_addr(env->img.img, &env->img.bpp,
 		&env->img.size_l, &env->img.endian);
 	env->fov = 60;
-	env->obj = ft_create_tabobjects(env);
+	env->shapes = shape(env);
 }
 
-inline void		ft_put_pixel(t_env *env, int x, int y, int color)
+inline void		putpixel(t_env *env, int x, int y, int color)
 {
 	if (y >= HGT || x >= WTH || x < 0 || y < 0)
 		return ;
@@ -38,13 +38,13 @@ int			main(int argc, char **argv)
 {
 	t_env e;
 
-	ft_env_cnstr(&e, argc, argv);
+	envctor(&e, argc, argv);
 	compute(&e);
 	mlx_put_image_to_window(e.mlx.mlx, e.mlx.win, e.img.img, 0, 0);
-	mlx_hook(e.mlx.win, KEYRELEASE, KEYRELEASEMASK, ft_keyrelease, &e);
-	mlx_hook(e.mlx.win, DESTROYNOTIFY, 0, ft_destroy, &e);
-	mlx_expose_hook(e.mlx.win, ft_expose, &e);
-	mlx_loop_hook(e.mlx.mlx, ft_loop_hook, &e);
+	mlx_hook(e.mlx.win, KEYRELEASE, KEYRELEASEMASK, e_keyrelease, &e);
+	mlx_hook(e.mlx.win, DESTROYNOTIFY, 0, e_destroy, &e);
+	mlx_expose_hook(e.mlx.win, e_expose, &e);
+	mlx_loop_hook(e.mlx.mlx, e_loophook, &e);
 	mlx_loop(e.mlx.mlx);
 	return (0);
 }

@@ -12,12 +12,12 @@
 
 #include "rt.h"
 
-inline t_obj		*ft_create_tabobjects(t_env *env)
+inline t_shape		*shape(t_env *env)
 {
-	t_obj	*obj;
+	t_shape	*shape;
 
-	env->nbobj = 1; //a supprimer later quand on aura le bon nombre
-	if (!(obj = (t_obj *)malloc(sizeof(t_obj))) * env->nbobj)
+	env->nbshape = 1; //a supprimer later quand on aura le bon nombre
+	if (!(shape = (t_shape *)malloc(sizeof(t_shape))) * env->nbshape)
 		exit(-1);
-	return (obj);
+	return (shape);
 }

@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-inline double		ft_vector_scale(t_vec3 v1, t_vec3 v2)
+inline double		vec3_scale(t_vec3 v1, t_vec3 v2)
 {
 	double	res;
 
@@ -20,7 +20,7 @@ inline double		ft_vector_scale(t_vec3 v1, t_vec3 v2)
 	return (res);
 }
 
-inline t_vec3		ft_vector_new(double x, double y, double z)
+inline t_vec3		vec3_new(double x, double y, double z)
 {
 	t_vec3	res;
 
@@ -30,7 +30,7 @@ inline t_vec3		ft_vector_new(double x, double y, double z)
 	return (res);
 }
 
-inline t_vec3		ft_vector_add(t_vec3 v1, t_vec3 v2)
+inline t_vec3		vec3_add(t_vec3 v1, t_vec3 v2)
 {
 	t_vec3	res;
 
@@ -40,7 +40,7 @@ inline t_vec3		ft_vector_add(t_vec3 v1, t_vec3 v2)
 	return (res);
 }
 
-inline t_vec3		ft_vector_sub(t_vec3 v1, t_vec3 v2)
+inline t_vec3		vec3_sub(t_vec3 v1, t_vec3 v2)
 {
 	t_vec3	res;
 
@@ -50,7 +50,7 @@ inline t_vec3		ft_vector_sub(t_vec3 v1, t_vec3 v2)
 	return (res);
 }
 
-inline t_vec3		ft_vector_dot(t_vec3 v, double k)
+inline t_vec3		vec3_dot(t_vec3 v, double k)
 {
 	t_vec3	res;
 

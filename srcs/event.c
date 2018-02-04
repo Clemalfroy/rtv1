@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-inline int		ft_loop_hook(t_env *env)
+inline int		e_loophook(t_env *env)
 {
 	if (env->redraw)
 	{
@@ -22,26 +22,21 @@ inline int		ft_loop_hook(t_env *env)
 	return (0);
 }
 
-inline int		ft_expose(t_env *env)
+inline int		e_expose(t_env *env)
 {
 	env->redraw = 1;
 	return (0);
 }
 
-inline int		ft_keyrelease(int key, t_env *env)
+inline int		e_keyrelease(int key, t_env *env)
 {
 	if (key == KEY_ESC)
-	{
-		mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-		free(env->obj);
-		exit(0);
-	}
+		mlx_exit(env, 0);
 	return (1);
 }
 
-inline int		ft_destroy(t_env *env)
+inline int		e_destroy(t_env *env)
 {
-	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	free(env->obj);
-	exit(0);
+	mlx_exit(env, 0);
+	return (0);
 }

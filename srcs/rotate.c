@@ -12,16 +12,16 @@
 
 #include "rt.h"
 
-inline t_ray			ft_rotate_ray(t_ray ray, t_mat mat)
+inline t_ray			rotateray(t_ray ray, t_mat mat)
 {
 	t_ray		res;
 
-	res.dir = ft_rotate(ray.dir, mat);
-	res.pos = ft_rotate(ray.pos, mat);
+	res.dir = rotate(ray.dir, mat);
+	res.pos = rotate(ray.pos, mat);
 	return (res);
 }
 
-inline t_vec3			ft_rotate(t_vec3 vec, t_mat mat)
+inline t_vec3			rotate(t_vec3 vec, t_mat mat)
 {
 	t_vec3		res;
 
@@ -31,7 +31,7 @@ inline t_vec3			ft_rotate(t_vec3 vec, t_mat mat)
 	return (res);
 }
 
-inline t_vec3			ft_rotate_cam(t_vec3 vec, t_mat mat)
+inline t_vec3			rotatecam(t_vec3 vec, t_mat mat)
 {
 	t_vec3		res;
 
@@ -41,7 +41,7 @@ inline t_vec3			ft_rotate_cam(t_vec3 vec, t_mat mat)
 	return (res);
 }
 
-inline void			ft_translate(t_vec3 *vec, t_vec3 trs)
+inline void			translate(t_vec3 *vec, t_vec3 trs)
 {
-	*vec = ft_vector_add(*vec, trs);
+	*vec = vec3_add(*vec, trs);
 }

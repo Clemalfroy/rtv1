@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 SRC_PATH = ./srcs/
-OBJ_PATH = ./obj/
+OBJ_PATH = ./shape/
 INC_PATH = ./includes/
 
 NAME = libft.a
