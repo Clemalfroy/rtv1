@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-inline t_shape		*shape(t_env *env)
+inline t_shape		*shapector(t_env *env)
 {
 	t_shape	*shape;
 

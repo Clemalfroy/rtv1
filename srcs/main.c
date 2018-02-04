@@ -23,7 +23,7 @@ static void		envctor(t_env *env, int argc, char **argv)
 	env->img.i_img = mlx_get_data_addr(env->img.img, &env->img.bpp,
 		&env->img.size_l, &env->img.endian);
 	env->fov = 60;
-	env->shapes = shape(env);
+	env->shapes = shapector(env);
 }
 
 inline void		putpixel(t_env *env, int x, int y, int color)

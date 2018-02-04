@@ -194,7 +194,7 @@ extern double	lb_light(t_env *env);
  ** Create objects functions
 */
 
-extern t_shape	*shape(t_env *env);
+extern t_shape	*shapector(t_env *env);
 
 /*
  ** Color function
