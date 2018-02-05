@@ -15,6 +15,5 @@
 void 		mlx_exit(t_env *env, int code)
 {
 	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	free(env->shapes);
 	exit(code);
 }

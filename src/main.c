@@ -14,6 +14,12 @@
 
 int	rtv1(t_env *e)
 {
+	e->mlx.mlx = mlx_init();
+	e->mlx.win = mlx_new_window(e->mlx.mlx, WTH, HGT, "Rtv1");
+	e->img.img = mlx_new_image(e->mlx.mlx, WTH, HGT);
+	e->img.addr = mlx_get_data_addr(e->img.img, &e->img.bpp,
+		&e->img.size_l, &e->img.endian);
+	e->fov = 60;
 	compute(e);
 	mlx_put_image_to_window(e->mlx.mlx, e->mlx.win, e->img.img, 0, 0);
 	mlx_hook(e->mlx.win, KEYRELEASE, KEYRELEASEMASK, e_keyrelease, e);
@@ -30,18 +36,9 @@ int	main(int argc, char **argv)
 	t_env	*env;
 
 	if (argc != 2)
-		return (1);
+		return (ft_retf(EXIT_FAILURE, "rtv1: %e\n", EINVAL));
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
-	{
-		ft_putf(STDERR_FILENO, "%s: %e\n", argv[1], errno);
-		return (1);
-	}
+		return (ft_retf(EXIT_FAILURE, "%s: %e\n", argv[1], errno));
 	ft_memset(env = alloca(sizeof(t_env)), 0, sizeof(t_env));
-	env->mlx.mlx = mlx_init();
-	env->mlx.win = mlx_new_window(env->mlx.mlx, WTH, HGT, "Rtv1");
-	env->img.img = mlx_new_image(env->mlx.mlx, WTH, HGT);
-	env->img.addr = mlx_get_data_addr(env->img.img, &env->img.bpp,
-		&env->img.size_l, &env->img.endian);
-	env->fov = 60;
 	return (shapeparse(env, fd, rtv1));
 }

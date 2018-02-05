@@ -60,7 +60,7 @@ inline t_m4		ft_m4_rot(float rad, t_v3 axis)
 	float	s;
 	float	c;
 
-	n = ft_v3_nor(axis);
+	n = ft_v3nor(axis);
 	s = sinf(rad);
 	c = cosf(rad);
 	return (ft_m4(

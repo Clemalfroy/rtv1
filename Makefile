@@ -27,7 +27,7 @@ INC_PATH = ./include/
 LNK_PATH = ./ $(3TH_PATH)
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
-R3TH_NAME = ft mlx pthread
+R3TH_NAME = ft
 D3TH_NAME = $(addsuffix .dev, $(R3TH_NAME))
 S3TH_NAME = $(addsuffix .san, $(R3TH_NAME))
 SRC_NAME = \
@@ -94,7 +94,7 @@ ifneq ($(3TH_PATH),)
 	@$(foreach lib,$(3TH_PATH),$(MAKE) -C $(lib);)
 endif
 	@$(CC) $(RCFLAGS) $(LNK) $(INC) $(ROBJ) -o $(EXE) $(R3TH) \
-	  -framework OpenGL -framework AppKit
+	  -framework OpenGL -framework AppKit -lmlx -lpthread
 	@printf  "%-30s\033[32m[✔]\033[0m\n" "$(EXE): exe"
 
 $(EXE).dev: $(DOBJ)
@@ -102,7 +102,7 @@ ifneq ($(3TH_PATH),)
 	@$(foreach lib,$(3TH_PATH),$(MAKE) -C $(lib) dev;)
 endif
 	@$(CC) $(DCFLAGS) $(LNK) $(INC) $(DOBJ) -o $(EXE).dev $(D3TH) \
-	  -framework OpenGL -framework AppKit
+	  -framework OpenGL -framework AppKit -lmlx -lpthread
 	@printf  "%-30s\033[32m[✔]\033[0m\n" "$(EXE).dev: exe"
 
 $(EXE).san: $(SOBJ)
@@ -110,7 +110,7 @@ ifneq ($(3TH_PATH),)
 	@$(foreach lib,$(3TH_PATH),$(MAKE) -C $(lib) san;)
 endif
 	@$(CC) $(SCFLAGS) $(LNK) $(INC) $(SOBJ) -o $(EXE).san $(S3TH) \
-	  -framework OpenGL -framework AppKit
+	  -framework OpenGL -framework AppKit -lmlx -lpthread
 	@printf  "%-30s\033[32m[✔]\033[0m\n" "$(EXE).san: exe"
 
 $(ROBJ_PATH)%.o: $(SRC_PATH)%.c

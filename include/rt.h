@@ -26,9 +26,18 @@
 # define PI 3.141592653
 # define WTH 1450
 # define HGT 1450
-# define SIGN(a) (a < 0 ? -1 : 1)
+# define SIGN(a) ((a) < 0 ? -1 : 1)
 # define RGB(r,g,b) (((char)(r)|((int)((char)(g))<<8))|(((long)(char)(b))<<16))
-# define THREADS 16
+# define THREADS 1
+
+enum			e_shape
+{
+	SHAPE_NONE = 0,
+	SHAPE_SPHERE,
+	SHAPE_CYLINDER,
+	SHPAE_CONE,
+	SHAPE_PLANE
+};
 
 typedef struct	s_vec3
 {
@@ -74,7 +83,7 @@ typedef struct	s_shape
 	t_vec3		norm;
 	t_mat		inv;
 	t_mat		rot;
-	int			type;
+	uint8_t		type;
 }				t_shape;
 
 typedef struct	s_mlx
