@@ -107,7 +107,7 @@ static inline int	parsecam(t_cam *cam, char **it)
 	return (YEP);
 }
 
-static inline void	setrotation(t_vec3 *rot t_shape *shape)
+static inline void	setrotation(t_vec3 *rot, t_shape *shape)
 {
 	double	t;
 
