@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit.c                                              :+:      :+:    :+:   */
+/*   event.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/12 15:13:46 by cmalfroy          #+#    #+#             */
-/*   Updated: 2017/12/17 16:36:52 by cmalfroy         ###   ########.fr       */
+/*   Created: 2017/12/13 15:33:55 by cmalfroy          #+#    #+#             */
+/*   Updated: 2017/12/13 15:41:17 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "rtv1.h"
 
-inline void		putpixel(t_env *env, int x, int y, int color)
+inline int		e_keyrelease(int key, t_env *env)
 {
-	if (y >= HGT || x >= WTH || x < 0 || y < 0)
-		return ;
-	*(int *)&env->img.addr[(y * env->img.size_l) +
-		(x * (env->img.bpp / 8))] = color;
+	if (key == KEY_ESC)
+		mlx_exit(env, 0);
+	return (1);
+}
+
+inline int		e_destroy(t_env *env)
+{
+	mlx_exit(env, 0);
+	return (0);
 }

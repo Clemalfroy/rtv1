@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   hit.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,8 +12,10 @@
 
 #include "rtv1.h"
 
-void 		mlx_exit(t_env *env, int code)
+inline void		putpixel(t_env *env, int x, int y, int color)
 {
-	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	exit(code);
+	if (y >= HGT || x >= WTH || x < 0 || y < 0)
+		return ;
+	*(int *)&env->img.addr[(y * env->img.size_l) +
+		(x * (env->img.bpp / 8))] = color;
 }

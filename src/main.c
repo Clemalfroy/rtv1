@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "rtv1.h"
 
 int	rtv1(t_env *e)
 {
@@ -19,13 +19,9 @@ int	rtv1(t_env *e)
 	e->img.img = mlx_new_image(e->mlx.mlx, WTH, HGT);
 	e->img.addr = mlx_get_data_addr(e->img.img, &e->img.bpp,
 		&e->img.size_l, &e->img.endian);
-	e->fov = 60;
-	compute(e);
 	mlx_put_image_to_window(e->mlx.mlx, e->mlx.win, e->img.img, 0, 0);
 	mlx_hook(e->mlx.win, KEYRELEASE, KEYRELEASEMASK, e_keyrelease, e);
 	mlx_hook(e->mlx.win, DESTROYNOTIFY, 0, e_destroy, e);
-	mlx_expose_hook(e->mlx.win, e_expose, e);
-	mlx_loop_hook(e->mlx.mlx, e_loophook, e);
 	mlx_loop(e->mlx.mlx);
 	return (0);
 }

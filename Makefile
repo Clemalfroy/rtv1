@@ -30,11 +30,10 @@ OBJ_NAME = $(SRC_NAME:.c=.o)
 R3TH_NAME = ft
 D3TH_NAME = $(addsuffix .dev, $(R3TH_NAME))
 S3TH_NAME = $(addsuffix .san, $(R3TH_NAME))
-SRC_NAME = \
-	main.c events/event.c libmlx/color.c raytracing.c matrix/matrix.c \
-    vectors/vector.c matrix/rotate.c matrix/matrix2.c vectors/vector2.c \
-    light/light.c intersect/hit.c intersect/quadra.c shape/parse.c \
-    libmlx/mlxexit.c libmlx/putpixel.c
+SRC_NAME = event/event.c\
+libmlx/mlxcolor.c libmlx/mlxexit.c libmlx/mlxputpixel.c\
+parsing/parse.c\
+main.c
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 ROBJ = $(addprefix $(ROBJ_PATH), $(OBJ_NAME))
