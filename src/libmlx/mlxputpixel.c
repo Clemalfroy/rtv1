@@ -14,8 +14,15 @@
 
 inline void		putpixel(t_env *env, int x, int y, int color)
 {
-	if (y >= HGT || x >= WTH || x < 0 || y < 0)
-		return ;
-	*(int *)&env->img.addr[(y * env->img.size_l) +
-		(x * (env->img.bpp / 8))] = color;
+	int				i;
+	unsigned int	p;
+
+	i = 0;
+	p = x * (env->img.bpp / 8) + y * (env->img.size_l);
+	while (i < (env->img.bpp / 8))
+	{
+		env->img.addr[p + i] = color;
+		color >>= 8;
+		i++;
+	}
 }

@@ -21,5 +21,8 @@
 # include "rtv1/obj.h"
 # include "rtv1/parse.h"
 # include "rtv1/draw.h"
+# include "rtv1/vector.h"
+# include "rtv1/intersect.h"
+# include "rtv1/light.h"
 
 #endif

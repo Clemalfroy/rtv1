@@ -34,6 +34,9 @@ SRC_NAME = event/event.c\
 libmlx/mlxcolor.c libmlx/mlxexit.c libmlx/mlxputpixel.c libmlx/mlxhud.c\
 parsing/parse.c\
 draw/draw.c\
+vector/vector.c vector/vector2.c\
+light/light.c light/lightattributes.c\
+intersect/intersect.c\
 main.c
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))

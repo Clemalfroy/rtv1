@@ -18,7 +18,7 @@
 # include "tys.h"
 # include "mem.h"
 
-extern void		ft_bzero	(void *ptr, size_t n);
+extern void		ft_fzero(float *s, int n);
 
 extern void		*ft_memccpy(void *d, void const *s, int c, size_t n);
 extern void		*ft_memchr(void const *s, int c, size_t n);
