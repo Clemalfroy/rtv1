@@ -131,6 +131,19 @@ static inline int	parsecam(t_cam *cam, char **it)
 	return (YEP);
 }
 
+inline static int lightparse(t_env *e)
+{
+	int i;
+	int j;
+
+	i = -1;
+	j = -1;
+	while (++i < e->nbobj)
+		if(e->obj[i].type == 5)
+			e->light[++j] = e->obj[i];
+	return (YEP);
+}
+
 inline int	shapeparse(t_env *env, int fd, t_rtcb *cb)
 {
 	size_t	n;
@@ -145,15 +158,18 @@ inline int	shapeparse(t_env *env, int fd, t_rtcb *cb)
 	buf[r] = '\0';
 	while (*buf == '\n')
 		++buf;
-	if (*buf != 'c' || parsecam(&env->cam, &buf))
+	if ((i = -1) && (*buf != 'c' || parsecam(&env->cam, &buf)))
 		return (NOP);
 	if (!ft_isdigit(*buf) || (env->nbobj = atoio(&buf)) < 0 || *buf != '`')
 		return (ft_retf(STDERR_FILENO, UNX, *buf));
 	env->obj = alloca(env->nbobj * sizeof(t_obj));
-	i = -1;
 	++buf;
 	while (++i < env->nbobj)
-		if (parseshape(env->obj + i, &buf))
+		if (parseshape(env->obj + i, &buf) ||
+			(env->nblight += env->obj[i].type == 5 ? 1 : 0) < 0)
 			return (NOP);
+	if (env->nblight && (env->light = alloca(env->nblight * sizeof(t_obj))) &&
+		lightparse(env))
+		return (ft_retf(STDERR_FILENO, "Invalid light informations\n"));
 	return (cb(env));
 }

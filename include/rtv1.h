@@ -13,6 +13,7 @@
 #ifndef RTV1_H
 # define RTV1_H
 
+# include <libft.h>
 # include "rtv1/env.h"
 # include "rtv1/event.h"
 # include "rtv1/libmlx.h"
