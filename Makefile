@@ -33,6 +33,7 @@ S3TH_NAME = $(addsuffix .san, $(R3TH_NAME))
 SRC_NAME = event/event.c\
 libmlx/mlxcolor.c libmlx/mlxexit.c libmlx/mlxputpixel.c libmlx/mlxhud.c\
 parsing/parse.c\
+draw/draw.c\
 main.c
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))

@@ -20,5 +20,6 @@
 # include "rtv1/utility.h"
 # include "rtv1/obj.h"
 # include "rtv1/parse.h"
+# include "rtv1/draw.h"
 
 #endif

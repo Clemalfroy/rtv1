@@ -12,8 +12,6 @@
 
 #include "rtv1.h"
 
-//TODO: remplir la strucuture light
-
 int	rtv1(t_env *e)
 {
 	e->mlx.mlx = mlx_init();
@@ -24,6 +22,7 @@ int	rtv1(t_env *e)
 	e->hud = 1;
 	e->antialias = 1;
 	mlx_hud(e);
+	draw(e);
 	mlx_put_image_to_window(e->mlx.mlx, e->mlx.win, e->img.img, 0, 0);
 	mlx_hook(e->mlx.win, KEYRELEASE, KEYRELEASEMASK, e_keyrelease, e);
 	mlx_hook(e->mlx.win, DESTROYNOTIFY, 0, e_destroy, e);

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   hud.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,12 +19,12 @@ inline void mlx_hud(t_env *e)
 	if (e->hud == 1 && (y = 10))
 	{
 		if (e->antialias == 1)
-			MSP(e->mlx.mlx, e->mlx.win, WTH, y, WHITE, "anti-aliasing: off");
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "anti-aliasing: off");
 		else
-			MSP(e->mlx.mlx, e->mlx.win, WTH, y, WHITE, "anti-aliasing: on");
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "anti-aliasing: on");
 		if ((y += 20) &&  e->spec == 1)
-			MSP(e->mlx.mlx, e->mlx.win, WTH, y, WHITE, "specularity: on");
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "specularity: on");
 		else
-			MSP(e->mlx.mlx, e->mlx.win, WTH, y, WHITE, "specularity: off");
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "specularity: off");
 	}
 }
