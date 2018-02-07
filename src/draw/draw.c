@@ -12,6 +12,13 @@
 
 #include "rtv1.h"
 
+static void	average(float *r, float *tab)
+{
+	r[0] += ft_clamp(tab[0], 0.0, 1.0);
+	r[1] += ft_clamp(tab[1], 0.0, 1.0);
+	r[2] += ft_clamp(tab[2], 0.0, 1.0);
+}
+
 static float	*setray(t_env *env, float *tab, double x, double y)
 {
 	double	u;
@@ -49,6 +56,7 @@ static inline void	raytrace(t_env *env, double x, double y)
 			setray(env, tab, x, y);
 			if ((nb = intersect(env, env->obj, env->raydir, env->cam.pos)) >= 0)
 				lambertlight(env, nb, env->light, tab);
+			average(r, tab);
 			x += (1.0 / env->antialias);
 		}
 		y += (1.0 / env->antialias);

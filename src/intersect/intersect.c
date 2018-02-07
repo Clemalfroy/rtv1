@@ -92,15 +92,15 @@ inline int intersect(t_env *env, t_obj *obj, t_vec3 ray, t_vec3 pos)
 	env->t = 80000.0;
 	while (++env->curobj < env->nbobj)
 	{
-		if (obj->type == 3)
+		if (obj->type == SHAPE_CONE)
 			dist = intercone(env, obj, ray, pos);
-		else if (obj->type == 2)
+		else if (obj->type == SHAPE_CYLINDER)
 			dist = intercylinder(env, obj, ray, pos);
-		else if (obj->type == 4)
+		else if (obj->type == SHAPE_PLANE)
 			dist = interplane(env, obj, ray, pos);
-		else if (obj->type == 1)
+		else if (obj->type == SHAPE_SPHERE)
 			dist = intersphere(env, obj, ray, pos);
-		else if (obj->type == 5)
+		else if (obj->type == SHAPE_LIGHT)
 			continue;
 		if (dist > 0.0001 && dist < env->t)
 		{
