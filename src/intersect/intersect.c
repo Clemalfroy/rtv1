@@ -82,16 +82,19 @@ inline double	interplane(t_env *env, t_obj *tmp, t_vec3 ray, t_vec3 pos)
 	return (env->t0);
 }
 
-inline int intersect(t_env *env, t_obj *obj, t_vec3 ray, t_vec3 pos)
+inline int intersect(t_env *env, t_vec3 ray, t_vec3 pos)
 {
 	int 	hit;
-	double dist;
+	double	dist;
+	t_obj	*obj;
+	int 	curobj;
 
 	hit = -1;
-	env->curobj = -1;
+	curobj = -1;
 	env->t = 80000.0;
-	while (++env->curobj < env->nbobj)
+	while (++curobj < env->nbobj)
 	{
+		obj = &env->obj[curobj];
 		if (obj->type == SHAPE_CONE)
 			dist = intercone(env, obj, ray, pos);
 		else if (obj->type == SHAPE_CYLINDER)
@@ -104,8 +107,8 @@ inline int intersect(t_env *env, t_obj *obj, t_vec3 ray, t_vec3 pos)
 			continue;
 		if (dist > 0.0001 && dist < env->t)
 		{
-			hit = env->curobj;
-			env->t = dist;
+			hit = curobj;
+			env->t = (float)dist;
 		}
 	}
 	return (hit);

@@ -24,24 +24,24 @@ inline float	ft_clamp(float value, float min, float max)
 inline void		reflect(t_env *env, t_obj *tmp, t_vec3 *pos, float *tab)
 {
 	t_obj	*tmp2;
-	t_obj	*light;
 	t_vec3	dist;
 	double	d;
+	int		curlight;
 
-	if (env->cpt >= env->maxref || (light = env->light) == NULL)
+	if (env->cpt >= env->maxref || !env->nblight)
 		return ;
 	if ((tmp2 = ft_ref_init(env, tmp, pos)) == NULL || (env->cpt++) < 0)
 		return ;
-	env->curlight = -1;
-	while (++env->curlight != env->nblight)
+	curlight = -1;
+	while (++curlight != env->nblight)
 	{
 		LAMBERT = 0.14;
-		dist = vec3_sub(&light->pos, pos);
+		dist = vec3_sub(&env->light[curlight].pos, pos);
 		d = ft_clamp(1.0 / sqrtf(sqrtf(vec3_dot(&dist, &dist))), 0.0, 1.0);
 		vec3_norm(&dist);
-		if (ft_shadow(env, tmp2, light, *pos) == 0)
+		if (ft_shadow(env, tmp2, &env->light[curlight], *pos) == 0)
 			LAMBERT += ft_clamp(vec3_dot(&dist, &env->norm), 0.0, 1.0);
-		endlight(tmp2, light, tab, (float)d);
+		endlight(tmp2, &env->light[curlight], tab, (float)d);
 		tab[0] += (COND1) ? specular(env, dist, (float)d, tab[3]) : 0.0;
 		tab[1] += (COND1) ? specular(env, dist, (float)d, tab[3]) : 0.0;
 		tab[2] += (COND1) ? specular(env, dist, (float)d, tab[3]) : 0.0;

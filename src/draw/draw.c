@@ -19,25 +19,23 @@ static void	average(float *r, float *tab)
 	r[2] += ft_clamp(tab[2], 0.0, 1.0);
 }
 
-static float	*setray(t_env *env, float *tab, double x, double y)
+static void	setray(t_env *env, float *tab, double x, double y)
 {
 	double	u;
 	double	v;
 
-	u = (WTH - x * 2.0) / WTH;
-	v = (HGT - y * 2.0) / WTH;
+	u = (WTH - (double)x * 2.0) / HGT;
+	v = (HGT - (double)y * 2.0) / WTH;
 	env->k = vec3_sub(&env->cam.dir, &env->cam.pos);
 	vec3_norm(&env->k);
 	env->i = vec3_cross(&env->k, &(t_vec3){0.0, 1.0, 0.0});
 	vec3_norm(&env->i);
 	env->j = vec3_cross(&env->i, &env->k);
-	env->raydir = (t_vec3){(float)(u * env->i.x + v * env->j.x + FOV *
-		env->k.x), (float)(u * env->i.y + v * env->j.y + FOV * env->k.y),
-		(float)(u * env->i.z + v * env->j.z + FOV * env->k.z)};
+	env->raydir = (t_vec3){(u * env->i.x + v * env->j.x + FOV *
+		env->k.x), (u * env->i.y + v * env->j.y + FOV * env->k.y),
+		(u * env->i.z + v * env->j.z + FOV * env->k.z)};
 	vec3_norm(&env->raydir);
-	env->cpt = 0;
 	ft_fzero(tab, 4);
-	return (tab);
 }
 
 static inline void	raytrace(t_env *env, double x, double y)
@@ -54,8 +52,8 @@ static inline void	raytrace(t_env *env, double x, double y)
 		while(x < env->tx + 1 && (p += 1) > 0)
 		{
 			setray(env, tab, x, y);
-			if ((nb = intersect(env, env->obj, env->raydir, env->cam.pos)) >= 0)
-				lambertlight(env, nb, env->light, tab);
+			if ((nb = intersect(env, env->raydir, env->cam.pos)) >= 0)
+				lambertlight(env, nb, tab);
 			average(r, tab);
 			x += (1.0 / env->antialias);
 		}
