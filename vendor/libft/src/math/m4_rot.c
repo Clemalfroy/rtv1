@@ -73,7 +73,7 @@ inline t_m4		ft_m4_rot(float rad, t_vec3 axis)
 		ft_m1(0, 0, 0, 1)));
 }
 
-inline t_vec3		ft_m4_apply(t_m4 m, t_vec3 to)
+inline t_vec3	ft_m4_apply(t_m4 m, t_vec3 to)
 {
 	t_vec3	v;
 	float	w;
