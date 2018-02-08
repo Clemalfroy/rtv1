@@ -30,7 +30,7 @@ OBJ_NAME = $(SRC_NAME:.c=.o)
 R3TH_NAME = ft
 D3TH_NAME = $(addsuffix .dev, $(R3TH_NAME))
 S3TH_NAME = $(addsuffix .san, $(R3TH_NAME))
-SRC_NAME = event/event.c\
+SRC_NAME = event/event.c event/keyhook.c\
 libmlx/mlxcolor.c libmlx/mlxexit.c libmlx/mlxputpixel.c libmlx/mlxhud.c\
 parsing/parse.c\
 draw/draw.c\

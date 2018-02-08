@@ -12,19 +12,30 @@
 
 #include "rtv1.h"
 
+#define DELIM "-----------------------------"
+#define AA "anti-aliasing: "
+#define SPC "specularity: "
+
 inline void mlx_hud(t_env *e)
 {
 	int y;
+	char ref[20];
 
-	if (e->hud == 1 && (y = 10))
+	if (e->hud == 1 && !(y = 0))
 	{
-		if (e->antialias == 1)
-			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "anti-aliasing: off");
+		if ((y += 40) && e->antialias == 1)
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, HGT - y, WHITE, AA "off");
 		else
-			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "anti-aliasing: on");
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, HGT - y, WHITE, AA "on");
 		if ((y += 20) &&  e->spec == 1)
-			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "specularity: on");
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, HGT - y, WHITE, SPC "on");
 		else
-			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "specularity: off");
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, HGT - y, WHITE, SPC "off");
+		y += 20;
+		ft_strcat(ref,"reflections : ");
+		ft_strcat(ref, ft_itoa(e->maxref, 10));
+		MSP(e->mlx.mlx, e->mlx.win, HUDX, HGT - y, WHITE, ref);
+		y += 20;
+		MSP(e->mlx.mlx, e->mlx.win, HUDX, HGT - y, WHITE, DELIM);
 	}
 }
