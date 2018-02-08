@@ -12,14 +12,14 @@
 
 #include "rtv1.h"
 
-static void	average(float *r, float *tab)
+static inline void	average(float *r, float *tab)
 {
 	r[0] += ft_clamp(tab[0], 0.0, 1.0);
 	r[1] += ft_clamp(tab[1], 0.0, 1.0);
 	r[2] += ft_clamp(tab[2], 0.0, 1.0);
 }
 
-static void	setray(t_env *env, float *tab, double x, double y)
+static void			setray(t_env *env, float *tab, double x, double y)
 {
 	double	u;
 	double	v;
@@ -41,15 +41,15 @@ static void	setray(t_env *env, float *tab, double x, double y)
 static inline void	raytrace(t_env *env, double x, double y)
 {
 	float	tab[4];
-	float 	r[3];
-	double  p;
-	int 	nb;
+	float	r[3];
+	double	p;
+	int		nb;
 
 	ft_fzero(r, 3);
 	p = 0.0;
 	while (y < env->ty + 1 && (x = env->tx) > -1)
 	{
-		while(x < env->tx + 1 && (p += 1) > 0)
+		while (x < env->tx + 1 && (p += 1) > 0)
 		{
 			setray(env, tab, x, y);
 			if ((nb = intersect(env, env->raydir, env->cam.pos)) >= 0)
@@ -65,8 +65,8 @@ static inline void	raytrace(t_env *env, double x, double y)
 
 static inline void	mthrd_process(t_thread *thrd)
 {
-	double 		x;
-	double 		y;
+	double		x;
+	double		y;
 
 	y = 0.0;
 	while (y < HGT)
@@ -83,11 +83,11 @@ static inline void	mthrd_process(t_thread *thrd)
 	pthread_exit(NULL);
 }
 
-inline int 		draw(t_env *env)
+inline int			draw(t_env *env)
 {
 	pthread_t	th[THREADS];
 	t_thread	tab[THREADS];
-	int 		i;
+	int			i;
 
 	i = -1;
 	mlx_destroy_image(env->mlx.mlx, env->img.img);

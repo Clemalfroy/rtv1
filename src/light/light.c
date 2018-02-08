@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-inline int		ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
+inline int			ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
 {
 	t_obj	*obj;
 	t_vec3	dist;
@@ -23,7 +23,6 @@ inline int		ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
 	env->t = sqrtf(vec3_dot(&dist, &dist));
 	vec3_norm(&dist);
 	while (++curobj != env->nbobj)
-	{
 		if ((obj = env->obj + curobj) != tmp)
 		{
 			if (obj->type == 1)
@@ -39,11 +38,10 @@ inline int		ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
 			if (env->a > 0.0001 && env->a < env->t)
 				return (1);
 		}
-	}
 	return (0);
 }
 
-static t_obj	*ft_ref_inter(t_env *env, t_obj *tmp, t_vec3 pos)
+static t_obj		*ft_ref_inter(t_env *env, t_obj *tmp, t_vec3 pos)
 {
 	t_obj	*obj;
 	t_obj	*tmp2;
@@ -71,7 +69,7 @@ static t_obj	*ft_ref_inter(t_env *env, t_obj *tmp, t_vec3 pos)
 	return (tmp2);
 }
 
-inline t_obj	*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos)
+inline t_obj		*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos)
 {
 	t_obj	*tmp2;
 
@@ -90,12 +88,12 @@ inline t_obj	*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos)
 	return (tmp2);
 }
 
-inline void		lambertlight(t_env *env, int nb, float *tab)
+inline void			lambertlight(t_env *env, int nb, float *tab)
 {
 	t_vec3	pos;
 	t_vec3	dist;
 	float	d;
-	int curlight;
+	int		curlight;
 
 	curlight = -1;
 	pos = (t_vec3){env->cam.pos.x + env->t * env->raydir.x, env->cam.pos.y +

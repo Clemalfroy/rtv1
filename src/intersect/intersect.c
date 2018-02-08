@@ -82,12 +82,12 @@ inline double	interplane(t_env *env, t_obj *tmp, t_vec3 ray, t_vec3 pos)
 	return (env->t0);
 }
 
-inline int intersect(t_env *env, t_vec3 ray, t_vec3 pos)
+inline int		intersect(t_env *env, t_vec3 ray, t_vec3 pos)
 {
-	int 	hit;
+	int		hit;
 	double	dist;
 	t_obj	*obj;
-	int 	curobj;
+	int		curobj;
 
 	hit = -1;
 	curobj = -1;
@@ -105,11 +105,8 @@ inline int intersect(t_env *env, t_vec3 ray, t_vec3 pos)
 			dist = intersphere(env, obj, ray, pos);
 		else if (obj->type == SHAPE_LIGHT)
 			continue;
-		if (dist > 0.0001 && dist < env->t)
-		{
+		if (dist > 0.0001 && dist < env->t && (env->t = (float)dist))
 			hit = curobj;
-			env->t = (float)dist;
-		}
 	}
 	return (hit);
 }

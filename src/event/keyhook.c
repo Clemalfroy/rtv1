@@ -20,19 +20,21 @@
 #define J env->j
 #define K env->k
 
+#define DIR env->cam.dir
+
 static int		ft_pref_key(int keycode, t_env *env)
 {
-	(keycode == 15 && env->maxref < 15) ? env->maxref++ : env->maxref;
-	(keycode == 3 && env->maxref > 0) ? env->maxref-- : env->maxref;
-	if (keycode == 14)
+	(keycode == KEY_R && env->maxref < 15) ? env->maxref++ : env->maxref;
+	(keycode == KEY_F && env->maxref > 0) ? env->maxref-- : env->maxref;
+	if (keycode == KEY_E)
 		env->pref = (env->pref == 0) ? 1 : 0;
-	if (keycode == 7)
+	if (keycode == KEY_X)
 	{
 		if (env->antialias == 1 || env->antialias == 2 || env->antialias == 4 ||
 			env->antialias == 8)
 			env->antialias *= 2;
 	}
-	if (keycode == 6)
+	if (keycode == KEY_C)
 	{
 		if (env->antialias == 2 || env->antialias == 4 || env->antialias == 8 ||
 			env->antialias == 16)
@@ -41,60 +43,55 @@ static int		ft_pref_key(int keycode, t_env *env)
 	return (0);
 }
 
-static int	ft_translation_add(int keycode, t_env *env)
+static int		ft_translation_add(int keycode, t_env *env)
 {
 	if (keycode == KEY_S)
 	{
-		env->cam.dir = (t_vec3){env->cam.dir.x - 10.0 * J.x,
-			env->cam.dir.y - 10.0 * J.y, env->cam.dir.z - 10.0 * J.z};
-		env->cam.pos = (t_vec3){env->cam.pos.x - 10.0 * J.x,
-			env->cam.pos.y - 10.0 * J.y, env->cam.pos.z - 10.0 * J.z};
+		DIR = (t_vec3){DIR.x - 3 * J.x, DIR.y - 3 * J.y, DIR.z - 3 * J.z};
+		env->cam.pos = (t_vec3){env->cam.pos.x - 3 * J.x,
+			env->cam.pos.y - 3 * J.y, env->cam.pos.z - 3 * J.z};
 	}
 	else if (keycode == KEY_W)
 	{
-		env->cam.dir = (t_vec3){env->cam.dir.x + 10.0 * J.x,
-			env->cam.dir.y + 10.0 * J.y, env->cam.dir.z + 10.0 * J.z};
-		env->cam.pos = (t_vec3){env->cam.pos.x + 10.0 * J.x,
-			env->cam.pos.y + 10.0 * J.y, env->cam.pos.z - 10.0 * J.z};
+		DIR = (t_vec3){DIR.x + 3 * J.x, DIR.y + 3 * J.y, DIR.z + 3 * J.z};
+		env->cam.pos = (t_vec3){env->cam.pos.x + 3 * J.x,
+			env->cam.pos.y + 3 * J.y, env->cam.pos.z - 3 * J.z};
 	}
 	else if (keycode == KEY_PLUS)
 	{
-		env->cam.dir = (t_vec3){env->cam.dir.x + 10.0 * K.x,
-			env->cam.dir.y + 10.0 * K.y, env->cam.dir.z + 10.0 * K.z};
-		env->cam.pos = (t_vec3){env->cam.pos.x + 10.0 * K.x,
-			env->cam.pos.y + 10.0 * K.y, env->cam.pos.z + 10.0 * K.z};
+		DIR = (t_vec3){DIR.x + 3 * K.x, DIR.y + 3 * K.y, DIR.z + 3 * K.z};
+		env->cam.pos = (t_vec3){POSX + 3 * K.x, POSY + 3 * K.y, POSZ + 3 * K.z};
 	}
 	if (keycode == KEY_MINUS)
 	{
-		env->cam.dir = (t_vec3){env->cam.dir.x - 10.0 * K.x,
-			env->cam.dir.y - 10.0 * K.y, env->cam.dir.z - 10.0 * K.z};
-		env->cam.pos = (t_vec3){env->cam.pos.x - 10.0 * K.x,
-			env->cam.pos.y - 10.0 * K.y, env->cam.pos.z - 10.0 * K.z};
+		DIR = (t_vec3){DIR.x - 3 * K.x, DIR.y - 3 * K.y, DIR.z - 3 * K.z};
+		env->cam.pos = (t_vec3){env->cam.pos.x - 3 * K.x,
+			env->cam.pos.y - 3 * K.y, env->cam.pos.z - 3 * K.z};
 	}
 	ft_pref_key(keycode, env);
 	return (draw(env));
 }
 
-static int	translation(int keycode, t_env *env)
+static int		translation(int keycode, t_env *env)
 {
-	K = vec3_sub(&env->cam.dir, &env->cam.pos);
+	K = vec3_sub(&DIR, &env->cam.pos);
 	vec3_norm(&K);
 	I = vec3_cross(&K, &(t_vec3){0.0, 1.0, 0.0});
 	vec3_norm(&I);
 	J = vec3_cross(&I, &K);
 	if (keycode == KEY_A)
 	{
-		env->cam.dir = (t_vec3){env->cam.dir.x + 10.0 * I.x,
-			env->cam.dir.y + 10.0 * I.y, env->cam.dir.z + 10.0 * I.z};
-		env->cam.pos = (t_vec3){env->cam.pos.x + 10.0 * I.x,
-			env->cam.pos.y + 10.0 * I.y, env->cam.pos.z + 10.0 * I.z};
+		DIR = (t_vec3){DIR.x + 3 * I.x,
+			DIR.y + 3 * I.y, DIR.z + 3 * I.z};
+		env->cam.pos = (t_vec3){env->cam.pos.x + 3 * I.x,
+			env->cam.pos.y + 3 * I.y, env->cam.pos.z + 3 * I.z};
 	}
 	else if (keycode == KEY_D)
 	{
-		env->cam.dir = (t_vec3){env->cam.dir.x - 10.0 * I.x,
-			env->cam.dir.y - 10.0 * I.y, env->cam.dir.z - 10.0 * I.z};
-		env->cam.pos = (t_vec3){env->cam.pos.x - 10.0 * I.x,
-			env->cam.pos.y - 10.0 * I.y, env->cam.pos.z - 10.0 * I.z};
+		DIR = (t_vec3){DIR.x - 3 * I.x,
+			DIR.y - 3 * I.y, DIR.z - 3 * I.z};
+		env->cam.pos = (t_vec3){env->cam.pos.x - 3 * I.x,
+			env->cam.pos.y - 3 * I.y, env->cam.pos.z - 3 * I.z};
 	}
 	else if (keycode == KEY_G)
 		env->spec = (env->spec == 0) ? 1 : 0;
@@ -103,29 +100,29 @@ static int	translation(int keycode, t_env *env)
 	return (ft_translation_add(keycode, env));
 }
 
-inline int	e_keyhook(int keycode, t_env *env)
+inline int		e_keyhook(int keycode, t_env *env)
 {
 	float	tmppos;
 
 	if (keycode == KEY_LEFT && (tmppos = POSX) < 20000)
 	{
-		POSX = POSX * cosf(0.05) + POSZ * sinf(0.05);
-		POSZ = tmppos * (-sinf(0.05)) + POSZ * cosf(0.05);
+		POSX = POSX * cosf(0.03) + POSZ * sinf(0.03);
+		POSZ = tmppos * (-sinf(0.03)) + POSZ * cosf(0.03);
 	}
-	else if (keycode == KEY_RIGHT && (tmppos = POSZ) > -20000)
+	else if (keycode == KEY_RIGHT && (tmppos = POSX) > -20000)
 	{
-		POSX = POSX * cosf(-0.05) + POSZ * sinf(-0.05);
-		POSZ = tmppos * (-sinf(-0.05)) + POSZ * cosf(-0.05);
+		POSX = POSX * cosf(-0.03) + POSZ * sinf(-0.03);
+		POSZ = tmppos * (-sinf(-0.03)) + POSZ * cosf(-0.03);
 	}
 	else if (keycode == KEY_DOWN && (tmppos = POSY) > -20000)
 	{
-		POSY = POSY * cosf(-0.05) + POSZ * (-sinf(-0.05));
-		POSZ = tmppos * sinf(-0.05) + POSZ * cosf(-0.05);
+		POSY = POSY * cosf(-0.03) + POSZ * (-sinf(-0.03));
+		POSZ = tmppos * sinf(-0.03) + POSZ * cosf(-0.03);
 	}
 	else if (keycode == KEY_UP && (tmppos = POSY) < 20000)
 	{
-		POSY = POSY * cosf(0.05) + POSZ * (-sinf(0.05));
-		POSZ = tmppos * sinf(0.05) + POSZ * cosf(0.05);
+		POSY = POSY * cosf(0.03) + POSZ * (-sinf(0.03));
+		POSZ = tmppos * sinf(0.03) + POSZ * cosf(0.03);
 	}
 	return (translation(keycode, env));
 }

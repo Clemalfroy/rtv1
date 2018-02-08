@@ -24,7 +24,7 @@ int	rtv1(t_env *e)
 	mlx_hud(e);
 	draw(e);
 	mlx_put_image_to_window(e->mlx.mlx, e->mlx.win, e->img.img, 0, 0);
-	mlx_hook(e->mlx.win, KeyPress, KEYPRESSMASK, e_keyhook, e);
+	mlx_hook(e->mlx.win, KEYPRESS, KEYPRESSMASK, e_keyhook, e);
 	mlx_hook(e->mlx.win, KEYRELEASE, KEYRELEASEMASK, e_keyrelease, e);
 	mlx_hook(e->mlx.win, DESTROYNOTIFY, 0, e_destroy, e);
 	mlx_loop(e->mlx.mlx);
