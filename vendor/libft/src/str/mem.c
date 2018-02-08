@@ -12,13 +12,16 @@
 
 #include "libft/str.h"
 
-inline void	ft_bzero(void *ptr, size_t n)
+inline void	ft_fzero(float *s, int n)
 {
-	uint8_t *str;
+	int i;
 
-	str = (uint8_t *)ptr;
-	while (n--)
-		*str++ = '\0';
+	i = 0;
+	while (i < n)
+	{
+		s[i] = 0.0f;
+		i++;
+	}
 }
 
 inline void	*ft_memccpy(void *dst, void const *src, int c, size_t n)

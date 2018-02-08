@@ -54,9 +54,9 @@ inline t_m4		ft_m4_rotz(float rad)
 		ft_m1(0, 0, 0, 1)));
 }
 
-inline t_m4		ft_m4_rot(float rad, t_v3 axis)
+inline t_m4		ft_m4_rot(float rad, t_vec3 axis)
 {
-	t_v3	n;
+	t_vec3	n;
 	float	s;
 	float	c;
 
@@ -73,9 +73,9 @@ inline t_m4		ft_m4_rot(float rad, t_v3 axis)
 		ft_m1(0, 0, 0, 1)));
 }
 
-inline t_v3		ft_m4_apply(t_m4 m, t_v3 to)
+inline t_vec3		ft_m4_apply(t_m4 m, t_vec3 to)
 {
-	t_v3	v;
+	t_vec3	v;
 	float	w;
 
 	v = ft_v3(

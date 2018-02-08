@@ -1,19 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   hud.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/12 15:13:46 by cmalfroy          #+#    #+#             */
-/*   Updated: 2017/12/17 16:36:52 by cmalfroy         ###   ########.fr       */
+/*   Created: 2017/12/14 14:19:35 by cmalfroy          #+#    #+#             */
+/*   Updated: 2017/12/16 16:41:36 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void 		mlx_exit(t_env *env, int code)
+inline void mlx_hud(t_env *e)
 {
-	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	exit(code);
+	int y;
+
+	if (e->hud == 1 && (y = 10))
+	{
+		if (e->antialias == 1)
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "anti-aliasing: off");
+		else
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "anti-aliasing: on");
+		if ((y += 20) &&  e->spec == 1)
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "specularity: on");
+		else
+			MSP(e->mlx.mlx, e->mlx.win, HUDX, y, WHITE, "specularity: off");
+	}
 }

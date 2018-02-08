@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "rtv1.h"
 
 #define UNX "rtv1: %c: Unexpected character\n"
 
@@ -59,7 +59,7 @@ static inline int	parsev3(t_vec3 *v3, char **it, char delim)
 	return (YEP);
 }
 
-static inline int	parserad(double *pos, char **it, char delim)
+static inline int	parserad(float *pos, char **it, char delim)
 {
 	char d;
 	char *s;
@@ -74,89 +74,25 @@ static inline int	parserad(double *pos, char **it, char delim)
 	return (YEP);
 }
 
-static inline int	parselight(t_light *light, char **it)
+static inline int	parseshape(t_obj *shape, char **it)
 {
-	++*it;
-	while (**it)
-		if (**it == '{' && parsev3(&light->pos, it, '}'))
-			return (NOP);
-		else
-			break ;
 	while (**it == '\n')
 		++*it;
-	return (YEP);
-}
-
-static inline int	parsecam(t_cam *cam, char **it)
-{
-	++*it;
-	while (**it)
-		if (**it == '{' && parsev3(&cam->pos, it, '}'))
-			return (NOP);
-		else if (**it == '<' && parsev3(&cam->pos, it, '>'))
-			return (NOP);
-		else
-			break ;
-	while (**it == '\n')
-		++*it;
-	cam->pos.x *= PI / 180;
-	cam->pos.y *= PI / 180;
-	cam->pos.z *= PI / 180;
-	if ((cam->rot.y = ((cam->rot.x || cam->rot.y) ? 1 : 0)))
-		cam->mat = matrix_cam(cam->rot);
-	return (YEP);
-}
-
-static inline void	setrotation(t_vec3 *rot, t_shape *shape)
-{
-	double	t;
-
-	shape->rot.ex = 0;
-	t = rot->x * PI / 180;
-	if (t)
-		shape->rot = matrix_x(t);
-	t = rot->y * PI / 180;
-	if (shape->rot.ex && t)
-		shape->rot = matrix_mult(shape->rot, matrix_y(t));
-	else if (t)
-		shape->rot = matrix_y(t);
-	t = rot->z * PI / 180;
-	if (shape->rot.ex && t)
-		shape->rot = matrix_mult(shape->rot, matrix_z(t));
-	else if (t)
-		shape->rot = matrix_z(t);
-	if (shape->rot.ex)
-		shape->inv = matrix_inv(shape->rot);
-}
-
-static inline int	parseshape(t_shape *shape, char **it)
-{
-	t_vec3 rot;
-	t_vec3 trs;
-
-	while (**it == '\n')
-		++*it;
-	if (**it < 'a' || **it > 'd')
+	if (**it < 'a' || **it > 'e')
 		return (ft_retf(STDERR_FILENO, "rtv1: %c: Unknown shape type\n", **it));
-	ft_memset(shape, 0, sizeof(t_shape));
+	ft_memset(shape, 0, sizeof(t_obj));
 	shape->type = (uint8_t)(*(*it)++ - '`');
 	while (**it)
-		if (**it == '{' && parsev3(&shape->center, it, '}'))
+		if (**it == '{' && parsev3(&shape->pos, it, '}'))
 			return (NOP);
-		else if (**it == '<' && parsev3(&rot, it, '>'))
+		else if (**it == '<' && parsev3(&shape->rot, it, '>'))
 			return (NOP);
 		else if (**it == '[' && parsev3(&shape->color, it, ']'))
 			return (NOP);
-		else if (**it == '"' && parsev3(&trs, it, '"'))
+		else if (**it == '\'' && parserad(&shape->size, it, '\''))
 			return (NOP);
-		else if (**it == '\'' && parserad(&shape->radius, it, '\''))
-			return (NOP);
-		else if (**it == '|' && parsev3(&shape->norm, it, '|'))
-			return (NOP);
-		else if (!ft_strchr("{[<\"'|", **it))
+		else if (!ft_strchr("{[<'", **it))
 			break ;
-	translate(&shape->center, trs);
-	setrotation(&rot, shape);
 	while (**it == '\n' || **it == ';')
 		++*it;
 	return (YEP);
@@ -180,6 +116,34 @@ static inline int	parsen(int fd, size_t *n)
 	return (YEP);
 }
 
+static inline int	parsecam(t_cam *cam, char **it)
+{
+	++*it;
+	while (**it)
+		if (**it == '{' && parsev3(&cam->pos, it, '}'))
+			return (NOP);
+		else if (**it == '<' && parsev3(&cam->dir, it, '>'))
+			return (NOP);
+		else
+			break ;
+	while (**it == '\n')
+		++*it;
+	return (YEP);
+}
+
+inline static int lightparse(t_env *e)
+{
+	int i;
+	int j;
+
+	i = -1;
+	j = -1;
+	while (++i < e->nbobj)
+		if(e->obj[i].type == 5)
+			e->light[++j] = e->obj[i];
+	return (YEP);
+}
+
 inline int	shapeparse(t_env *env, int fd, t_rtcb *cb)
 {
 	size_t	n;
@@ -194,16 +158,18 @@ inline int	shapeparse(t_env *env, int fd, t_rtcb *cb)
 	buf[r] = '\0';
 	while (*buf == '\n')
 		++buf;
-	if (*buf != 'l' || parselight(&env->light, &buf) || *buf != 'c' ||
-		parsecam(&env->cam, &buf))
+	if ((i = -1) && (*buf != 'c' || parsecam(&env->cam, &buf)))
 		return (NOP);
-	if (!ft_isdigit(*buf) || (env->nbshape = atoio(&buf)) < 0 || *buf != '`')
+	if (!ft_isdigit(*buf) || (env->nbobj = atoio(&buf)) < 0 || *buf != '`')
 		return (ft_retf(STDERR_FILENO, UNX, *buf));
-	env->shapes = alloca(env->nbshape * sizeof(t_shape));
-	i = -1;
+	env->obj = alloca(env->nbobj * sizeof(t_obj));
 	++buf;
-	while (++i < env->nbshape)
-		if (parseshape(env->shapes + i, &buf))
+	while (++i < env->nbobj)
+		if (parseshape(env->obj + i, &buf) ||
+			(env->nblight += env->obj[i].type == 5 ? 1 : 0) < 0)
 			return (NOP);
+	if (env->nblight && (env->light = alloca(env->nblight * sizeof(t_obj))) &&
+		lightparse(env))
+		return (ft_retf(STDERR_FILENO, "Invalid light informations\n"));
 	return (cb(env));
 }

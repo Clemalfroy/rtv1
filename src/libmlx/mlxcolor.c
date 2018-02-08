@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/12 15:13:46 by cmalfroy          #+#    #+#             */
-/*   Updated: 2017/12/17 16:36:52 by cmalfroy         ###   ########.fr       */
+/*   Created: 2017/12/14 14:19:35 by cmalfroy          #+#    #+#             */
+/*   Updated: 2017/12/16 16:41:36 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void 		mlx_exit(t_env *env, int code)
+inline int	rgbtoint(t_vec3 color)
 {
-	mlx_destroy_window(env->mlx.mlx, env->mlx.win);
-	exit(code);
+	return ((int)RGB(color.x, color.y, color.z));
 }

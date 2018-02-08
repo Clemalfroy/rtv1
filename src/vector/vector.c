@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event.c                                            :+:      :+:    :+:   */
+/*   vector/vector.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,33 +10,52 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "rtv1.h"
 
-inline int		e_loophook(t_env *env)
+t_vec3	vec3_scale(t_vec3 *v, float n)
 {
-	if (env->redraw)
-	{
-		mlx_put_image_to_window(env->mlx.mlx, env->mlx.win, env->img.img, 0, 0);
-		env->redraw = 0;
-	}
-	return (0);
+	t_vec3	res;
+
+	res.x = v->x * n;
+	res.y = v->y * n;
+	res.z = v->z * n;
+	return (res);
 }
 
-inline int		e_expose(t_env *env)
+t_vec3	vec3_sub(t_vec3 *v1, t_vec3 *v2)
 {
-	env->redraw = 1;
-	return (0);
+	t_vec3	sub;
+
+	sub.x = v1->x - v2->x;
+	sub.y = v1->y - v2->y;
+	sub.z = v1->z - v2->z;
+	return (sub);
 }
 
-inline int		e_keyrelease(int key, t_env *env)
+t_vec3	vec3_cross(t_vec3 *v1, t_vec3 *v2)
 {
-	if (key == KEY_ESC)
-		mlx_exit(env, 0);
-	return (1);
+	t_vec3	v;
+
+	v.x = v1->y * v2->z - v1->z * v2->y;
+	v.y = v1->z * v2->x - v1->x * v2->z;
+	v.z = v1->x * v2->y - v1->y * v2->x;
+	return (v);
 }
 
-inline int		e_destroy(t_env *env)
+void	vec3_norm(t_vec3 *v)
 {
-	mlx_exit(env, 0);
-	return (0);
+	double	n;
+
+	n = 1.0 / sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
+	v->x *= n;
+	v->y *= n;
+	v->z *= n;
+}
+
+float	vec3_dot(t_vec3 *v1, t_vec3 *v2)
+{
+	float	res;
+
+	res = v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
+	return (res);
 }

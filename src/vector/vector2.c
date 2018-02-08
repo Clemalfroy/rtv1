@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector2.c                                          :+:      :+:    :+:   */
+/*   vector/vector.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,38 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "rtv1.h"
 
-inline t_vec3			vec3_normalize(t_vec3 vec)
+inline t_vec3	normvec(t_env *env, t_obj *nb, t_vec3 pos)
 {
-	t_vec3		res;
-	double		len;
+	t_vec3	norm;
+	t_vec3	temp;
+	t_vec3	temp2;
 
-	res = vec;
-	len = sqrt(vec3_scale(vec, vec));
-	len = 1 / len;
-	res.x *= len;
-	res.y *= len;
-	res.z *= len;
-	return (res);
-}
-
-inline t_vec3			vec3_neg(t_vec3 vec)
-{
-	t_vec3		res;
-
-	res.x = -vec.x;
-	res.y = -vec.y;
-	res.z = -vec.z;
-	return (res);
-}
-
-inline t_vec3			vec3_divnorm(t_vec3 vec, double k)
-{
-	t_vec3		res;
-
-	res.x = vec.x / k;
-	res.y = vec.y / k;
-	res.z = vec.z / k;
-	return (res);
+	if (nb->type == 1 || nb->type == 2)
+	{
+		temp = vec3_scale(&nb->rot,
+			(vec3_dot(&env->raydir, &nb->rot) * env->t0
+				+ vec3_dot(&env->dist, &nb->rot)));
+		if (nb->type == 1)
+			temp = vec3_scale(&temp, (1 + pow(tan(nb->size), 2)));
+		temp2 = vec3_sub(&pos, &nb->pos);
+		norm = vec3_sub(&temp2, &temp);
+	}
+	else if (nb->type == 3)
+		norm = nb->rot;
+	if (nb->type == 4)
+		norm = vec3_sub(&pos, &nb->pos);
+	vec3_norm(&norm);
+	return (norm);
 }

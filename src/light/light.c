@@ -5,75 +5,115 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/12 15:13:46 by cmalfroy          #+#    #+#             */
-/*   Updated: 2017/12/17 16:36:52 by cmalfroy         ###   ########.fr       */
+/*   Created: 2017/12/14 14:19:35 by cmalfroy          #+#    #+#             */
+/*   Updated: 2017/12/16 16:41:36 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "rtv1.h"
 
-inline double		vec3_getdst(t_vec3 vec)
+inline int		ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
 {
-	t_vec3	tmp;
-	double	res;
+	t_obj	*obj;
+	t_vec3	dist;
+	int		curobj;
 
-	tmp = vec;
-	res = sqrt(vec3_scale(tmp, tmp));
-	return (res);
+	curobj = -1;
+	dist = vec3_sub(&light->pos, &pos);
+	env->t = sqrtf(vec3_dot(&dist, &dist));
+	vec3_norm(&dist);
+	while (++curobj != env->nbobj)
+	{
+		if ((obj = env->obj + curobj) != tmp)
+		{
+			if (obj->type == 1)
+				env->a = intercone(env, obj, dist, pos);
+			else if (obj->type == 2)
+				env->a = intercylinder(env, obj, dist, pos);
+			else if (obj->type == 3)
+				env->a = interplane(env, obj, dist, pos);
+			else if (obj->type == 4)
+				env->a = intersphere(env, obj, dist, pos);
+			else if (obj->type == 5)
+				continue;
+			if (env->a > 0.0001 && env->a < env->t)
+				return (1);
+		}
+	}
+	return (0);
 }
 
-inline static int	shadow(t_env *env)
+static t_obj	*ft_ref_inter(t_env *env, t_obj *tmp, t_vec3 pos)
 {
-	int		h;
-	double	t;
-	double	len;
+	t_obj	*obj;
+	t_obj	*tmp2;
+	double	dist;
+	int		curobj;
 
-	t = 0;
-	env->current = -1;
-	env->light.shd.pos = env->light.hit;
-	env->light.shd.dir = vec3_sub(env->light.pos, env->light.shd.pos);
-	len = vec3_getdst(env->light.shd.dir);
-	env->light.shd.dir = vec3_normalize(env->light.shd.dir);
-	while (++env->current < env->nbshape)
-	{
-		h = 0;
-		if (env->shapes[env->current].type == 1 && env->current != env->last)
-			h = rt_hitsphere(env->shapes[env->current], env->light.shd, &t);
-		else if (env->shapes[env->current].type == 2 && env->current != env->last)
-			h = rt_hitcylinder(env->shapes[env->current], env->light.shd, &t);
-		else if (env->shapes[env->current].type == 3 && env->current != env->last)
-			h = rt_hitcone(env->shapes[env->current], env->light.shd, &t);
-		if (h && t > 0 && t < len)
-			return (0);
-	}
-	return (1);
+	curobj = -1;
+	tmp2 = NULL;
+	while (++curobj != env->nbobj)
+		if ((obj = env->obj + curobj) != tmp)
+		{
+			if (obj->type == 1)
+				dist = intercone(env, obj, env->ref, pos);
+			else if (obj->type == 2)
+				dist = intercylinder(env, obj, env->ref, pos);
+			else if (obj->type == 3)
+				dist = interplane(env, obj, env->ref, pos);
+			else if (obj->type == 4)
+				dist = intersphere(env, obj, env->ref, pos);
+			else if (obj->type == 5)
+				continue;
+			if (dist > 0.0001 && dist < env->t && (env->t = (float)dist))
+				tmp2 = obj;
+		}
+	return (tmp2);
 }
 
-inline double			lb_light(t_env *env)
+inline t_obj	*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos)
 {
-	t_vec3		dir;
-	double		res;
+	t_obj	*tmp2;
 
-	env->light.hit = vec3_add(env->ray.pos,
-		vec3_dot(env->ray.dir, env->tmin));
-	dir = vec3_sub(env->light.hit, env->light.pos);
-	dir = vec3_normalize(dir);
-	env->light.nrm = vec3_normalize(vec3_sub(env->light.hit,
-		env->shapes[env->last].center));
-	env->light.nrm = vec3_neg(env->light.nrm);
-	if (env->shapes[env->last].rot.ex)
-		env->light.nrm = rotate(env->light.nrm, env->shapes[env->last].rot);
-	else if (env->shapes[env->last].type == 4)
-		env->light.nrm = vec3_new(0, 0, SIGN(env->ray.dir.z));
-	res = vec3_scale(dir, env->light.nrm);
-	if (res < 0.2)
-		res = 0.2;
-	if (env->shd)
+	env->t = 8000.0;
+	env->ref = vec3_scale(&env->norm,
+		(2 * vec3_dot(&env->refpos, &env->norm)));
+	env->ref = vec3_sub(&env->refpos, &env->ref);
+	vec3_norm(&env->ref);
+	tmp2 = ft_ref_inter(env, tmp, *pos);
+	if (!tmp2)
+		return (NULL);
+	*pos = (t_vec3){pos->x + env->t * env->ref.x, pos->y +
+		env->t * env->ref.y, pos->z + env->t * env->ref.z};
+	env->refpos = (t_vec3){env->ref.x, env->ref.y, env->ref.z};
+	env->norm = normvec(env, tmp2, *pos);
+	return (tmp2);
+}
+
+inline void		lambertlight(t_env *env, int nb, float *tab)
+{
+	t_vec3	pos;
+	t_vec3	dist;
+	float	d;
+	int curlight;
+
+	curlight = -1;
+	pos = (t_vec3){env->cam.pos.x + env->t * env->raydir.x, env->cam.pos.y +
+		env->t * env->raydir.y, env->cam.pos.z + env->t * env->raydir.z};
+	env->norm = normvec(env, &env->obj[nb], pos);
+	while (++curlight != env->nblight)
 	{
-		if (!shadow(env))
-			res = 0.15;
+		LAMBERT = 0.15;
+		dist = vec3_sub(&env->light[curlight].pos, &pos);
+		d = ft_clamp((1.0 / sqrtf(sqrtf(vec3_dot(&dist, &dist)))), 0.F, 1.F);
+		vec3_norm(&dist);
+		if (ft_shadow(env, &env->obj[nb], &env->light[curlight], pos) == 0)
+			LAMBERT += ft_clamp(vec3_dot(&dist, &env->norm), 0.0, 1.0);
+		endlight(&env->obj[nb], &env->light[curlight], tab, d);
+		tab[0] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;
+		tab[1] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;
+		tab[2] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;
 	}
-	if (res > 1)
-		res = 1;
-	return (res);
+	env->refpos = (t_vec3){env->raydir.x, env->raydir.y, env->raydir.z};
+	!PREF2 ? reflect(env, &env->obj[nb], &pos, tab) : 0;
 }
