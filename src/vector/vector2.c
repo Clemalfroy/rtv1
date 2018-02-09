@@ -18,19 +18,19 @@ inline t_vec3	normvec(t_env *env, t_obj *nb, t_vec3 pos)
 	t_vec3	temp;
 	t_vec3	temp2;
 
-	if (nb->type == 1 || nb->type == 2)
+	if (nb->type == SHAPE_CONE || nb->type == SHAPE_CYLINDER)
 	{
 		temp = vec3_scale(&nb->rot,
 			(vec3_dot(&env->raydir, &nb->rot) * env->t0
 				+ vec3_dot(&env->dist, &nb->rot)));
-		if (nb->type == 1)
+		if (nb->type == SHAPE_CONE)
 			temp = vec3_scale(&temp, (1 + pow(tan(nb->size), 2)));
 		temp2 = vec3_sub(&pos, &nb->pos);
 		norm = vec3_sub(&temp2, &temp);
 	}
-	else if (nb->type == 3)
+	else if (nb->type == SHAPE_PLANE)
 		norm = nb->rot;
-	if (nb->type == 4)
+	if (nb->type == SHAPE_SPHERE)
 		norm = vec3_sub(&pos, &nb->pos);
 	vec3_norm(&norm);
 	return (norm);
