@@ -12,9 +12,9 @@
 
 #include "libft/math/v3.h"
 
-inline t_vec3	ft_v3scale(t_vec3 v, float n)
+inline t_v3	ft_v3scale(t_v3 v, float n)
 {
-	t_vec3	res;
+	t_v3	res;
 
 	res.x = v.x * n;
 	res.y = v.y * n;
@@ -22,9 +22,9 @@ inline t_vec3	ft_v3scale(t_vec3 v, float n)
 	return (res);
 }
 
-inline t_vec3	ft_v3cross(t_vec3 v1, t_vec3 v2)
+inline t_v3	ft_v3cross(t_v3 v1, t_v3 v2)
 {
-	t_vec3	v;
+	t_v3	v;
 
 	v.x = v1.y * v2.z - v1.z * v2.y;
 	v.y = v1.z * v2.x - v1.x * v2.z;

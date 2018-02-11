@@ -14,9 +14,9 @@
 
 static inline void	average(float *r, float *tab)
 {
-	r[0] += ft_clamp(tab[0], 0.0, 1.0);
-	r[1] += ft_clamp(tab[1], 0.0, 1.0);
-	r[2] += ft_clamp(tab[2], 0.0, 1.0);
+	r[0] += rt_clamp(tab[0], 0.0, 1.0);
+	r[1] += rt_clamp(tab[1], 0.0, 1.0);
+	r[2] += rt_clamp(tab[2], 0.0, 1.0);
 }
 
 static void			setray(t_env *env, float *tab, double x, double y)
@@ -24,16 +24,18 @@ static void			setray(t_env *env, float *tab, double x, double y)
 	double	u;
 	double	v;
 
-	u = (WTH - (double)x * 2.0) / HGT;
-	v = (HGT - (double)y * 2.0) / WTH;
+	u = (WTH - x * 2.0) / HGT;
+	v = (HGT - y * 2.0) / WTH;
 	env->k = ft_v3sub(env->cam.dir, env->cam.pos);
 	env->k = ft_v3nor(env->k);
-	env->i = ft_v3cross(env->k, (t_vec3){0.0, 1.0, 0.0});
+	env->i = ft_v3cross(env->k, (t_v3){0.0, 1.0, 0.0});
 	env->i = ft_v3nor(env->i);
 	env->j = ft_v3cross(env->i, env->k);
-	env->raydir = (t_vec3){(u * env->i.x + v * env->j.x + FOV *
-		env->k.x), (u * env->i.y + v * env->j.y + FOV * env->k.y),
-		(u * env->i.z + v * env->j.z + FOV * env->k.z)};
+	env->raydir = (t_v3){
+		(float)(u * env->i.x + v * env->j.x + FOV * env->k.x),
+		(float)(u * env->i.y + v * env->j.y + FOV * env->k.y),
+		(float)(u * env->i.z + v * env->j.z + FOV * env->k.z)
+	};
 	env->raydir = ft_v3nor(env->raydir);
 	ft_fzero(tab, 4);
 }
@@ -52,15 +54,16 @@ static inline void	raytrace(t_env *env, double x, double y)
 		while (x < env->tx + 1 && (p += 1) > 0)
 		{
 			setray(env, tab, x, y);
-			if ((nb = intersect(env, env->raydir, env->cam.pos)) >= 0)
-				lambertlight(env, nb, tab);
+			if ((nb = rt_intersect(env, env->raydir, env->cam.pos)) >= 0)
+				rt_lambertlight(env, nb, tab);
 			average(r, tab);
 			x += (1.0 / env->antialias);
 		}
 		y += (1.0 / env->antialias);
 	}
-	putpixel(env, env->tx, env->ty, (((int)(r[0] / p * 255) & 0xff) << 16) +
-		(((int)(r[1] / p * 255) & 0xff) << 8) + ((int)(r[2] / p * 255) & 0xff));
+	rt_putpixel(env, env->tx, env->ty, (((int)(r[0] / p * 255) & 0xff) << 16) +
+		(((int)(r[1] / p * 255) & 0xff) << 8) +
+		((int)(r[2] / p * 255) & 0xff));
 }
 
 static inline void	mthrd_process(t_thread *thrd)
@@ -83,7 +86,7 @@ static inline void	mthrd_process(t_thread *thrd)
 	pthread_exit(NULL);
 }
 
-inline int			draw(t_env *env)
+inline int			rt_draw(t_env *env)
 {
 	pthread_t	th[THREADS];
 	t_thread	tab[THREADS];
@@ -102,6 +105,6 @@ inline int			draw(t_env *env)
 	while (i--)
 		pthread_join(th[i], NULL);
 	mlx_put_image_to_window(env->mlx.mlx, env->mlx.win, env->img.img, 0, 0);
-	mlx_hud(env);
+	rt_mlxhud(env);
 	return (1);
 }

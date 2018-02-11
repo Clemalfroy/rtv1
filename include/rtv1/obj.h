@@ -19,7 +19,7 @@
 # define POSY env->cam.pos.y
 # define POSZ env->cam.pos.z
 
-enum			e_shape
+enum				e_shape
 {
 	SHAPE_NONE = 0,
 	SHAPE_CONE,
@@ -31,17 +31,17 @@ enum			e_shape
 
 typedef struct		s_cam
 {
-	t_vec3			pos;
-	t_vec3			dir;
+	t_v3			pos;
+	t_v3			dir;
 }					t_cam;
 
 typedef struct		s_obj
 {
 	int				type;
 	float			size;
-	t_vec3			rot;
-	t_vec3			pos;
-	t_vec3			color;
+	t_v3			rot;
+	t_v3			pos;
+	t_v3			color;
 }					t_obj;
 
 #endif

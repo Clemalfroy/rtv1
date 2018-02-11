@@ -15,7 +15,7 @@
 #define UNX "rtv1: %c: Unexpected character\n"
 #define NB env->nblight
 
-inline int			atoio(char **it)
+inline int			rt_atoio(char **it)
 {
 	int i;
 	int m;
@@ -41,7 +41,7 @@ static inline int	parserad(float *pos, char **it, char delim)
 	if (!ft_isdigit(d = *++*it) || !(d -= '0') || *++*it != ':' || !(*++*it))
 		return (ft_retf(STDERR_FILENO, UNX, **it));
 	s = *it;
-	*pos = atoio(it);
+	*pos = rt_atoio(it);
 	if (*it - s != d || **it != delim)
 		return (ft_retf(STDERR_FILENO, UNX, **it));
 	++*it;
@@ -57,11 +57,11 @@ static inline int	parseshape(t_obj *shape, char **it)
 	ft_memset(shape, 0, sizeof(t_obj));
 	shape->type = (uint8_t)(*(*it)++ - '`');
 	while (**it)
-		if (**it == '{' && parsev3(&shape->pos, it, '}'))
+		if (**it == '{' && rt_parsev3(&shape->pos, it, '}'))
 			return (NOP);
-		else if (**it == '<' && parsev3(&shape->rot, it, '>'))
+		else if (**it == '<' && rt_parsev3(&shape->rot, it, '>'))
 			return (NOP);
-		else if (**it == '[' && parsev3(&shape->color, it, ']'))
+		else if (**it == '[' && rt_parsev3(&shape->color, it, ']'))
 			return (NOP);
 		else if (**it == '\'' && parserad(&shape->size, it, '\''))
 			return (NOP);
@@ -90,7 +90,7 @@ static inline int	parsen(int fd, size_t *n)
 	return (YEP);
 }
 
-inline int			shapeparse(t_env *env, int fd, t_rtcb *cb)
+inline int			rt_parseobj(t_env *env, int fd, t_rtcb *cb)
 {
 	size_t	n;
 	ssize_t	r;
@@ -105,16 +105,16 @@ inline int			shapeparse(t_env *env, int fd, t_rtcb *cb)
 	buf[r] = '\0';
 	while (*buf == '\n')
 		++buf;
-	if ((i = -1) && (*buf != 'c' || parsecam(&env->cam, &buf)))
+	if ((i = -1) && (*buf != 'c' || rt_parsecam(&env->cam, &buf)))
 		return (NOP);
-	if (!ft_isdigit(*buf) || (env->nbobj = atoio(&buf)) < 0 || *buf != '`')
+	if (!ft_isdigit(*buf) || (env->nbobj = rt_atoio(&buf)) < 0 || *buf != '`')
 		return (ft_retf(STDERR_FILENO, UNX, *buf));
 	(void)((env->obj = alloca(env->nbobj * sizeof(t_obj))) && ++buf);
 	while (++i < env->nbobj)
 		if (parseshape(env->obj + i, &buf) ||
 			(env->nblight += env->obj[i].type == 5 ? 1 : 0) < 0)
 			return (NOP);
-	if (NB && (env->light = alloca(NB * sizeof(t_obj))) && lightparse(env))
+	if (NB && (env->light = alloca(NB * sizeof(t_obj))) && rt_parselgt(env))
 		return (ft_retf(STDERR_FILENO, "Invalid light informations\n"));
 	return (cb(env));
 }

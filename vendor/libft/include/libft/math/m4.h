@@ -49,13 +49,13 @@ extern t_m4		ft_m4_identity(void);
 extern t_m4		ft_m4_transx(float s);
 extern t_m4		ft_m4_transy(float s);
 extern t_m4		ft_m4_transz(float s);
-extern t_m4		ft_m4_trans(t_vec3 off);
-extern t_m4		ft_m4_scale(t_vec3 scale);
+extern t_m4		ft_m4_trans(t_v3 off);
+extern t_m4		ft_m4_scale(t_v3 scale);
 extern t_m4		ft_m4_rotx(float rad);
 extern t_m4		ft_m4_roty(float rad);
 extern t_m4		ft_m4_rotz(float rad);
-extern t_m4		ft_m4_rot(float rad, t_vec3 axis);
+extern t_m4		ft_m4_rot(float rad, t_v3 axis);
 extern t_m4		ft_m4_mul(t_m4 a, t_m4 b);
-extern t_vec3	ft_m4_apply(t_m4 m, t_vec3 to);
+extern t_v3	ft_m4_apply(t_m4 m, t_v3 to);
 
 #endif

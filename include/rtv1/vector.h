@@ -17,6 +17,6 @@
 
 # include "env.h"
 
-extern t_vec3	normvec(t_env *env, t_obj *nb, t_vec3 pos);
+extern t_v3	normvec(t_env *env, t_obj *nb, t_v3 pos);
 
 #endif

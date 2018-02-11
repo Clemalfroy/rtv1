@@ -31,16 +31,16 @@ typedef	struct	s_env
 	t_obj		*light;
 	t_cam		cam;
 
-	t_vec3		raydir;
-	t_vec3		norm;
-	t_vec3		refpos;
-	t_vec3		ref;
+	t_v3		raydir;
+	t_v3		norm;
+	t_v3		refpos;
+	t_v3		ref;
 
-	t_vec3		i;
-	t_vec3		j;
-	t_vec3		k;
+	t_v3		i;
+	t_v3		j;
+	t_v3		k;
 
-	t_vec3		dist;
+	t_v3		dist;
 
 	int			nbobj;
 	int			nblight;

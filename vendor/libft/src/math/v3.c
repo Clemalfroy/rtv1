@@ -12,12 +12,12 @@
 
 #include "libft/math/v3.h"
 
-inline t_vec3		ft_v3(float x, float y, float z)
+inline t_v3		ft_v3(float x, float y, float z)
 {
-	return ((t_vec3){.x = x, .y = y, .z = z});
+	return ((t_v3){.x = x, .y = y, .z = z});
 }
 
-inline t_vec3		ft_v3add(t_vec3 a, t_vec3 b)
+inline t_v3		ft_v3add(t_v3 a, t_v3 b)
 {
 	a.x += b.x;
 	a.y += b.y;
@@ -25,7 +25,7 @@ inline t_vec3		ft_v3add(t_vec3 a, t_vec3 b)
 	return (a);
 }
 
-inline t_vec3		ft_v3sub(t_vec3 a, t_vec3 b)
+inline t_v3		ft_v3sub(t_v3 a, t_v3 b)
 {
 	a.x -= b.x;
 	a.y -= b.y;
@@ -33,7 +33,7 @@ inline t_vec3		ft_v3sub(t_vec3 a, t_vec3 b)
 	return (a);
 }
 
-inline t_vec3		ft_v3mul(t_vec3 a, t_vec3 b)
+inline t_v3		ft_v3mul(t_v3 a, t_v3 b)
 {
 	a.x *= b.x;
 	a.y *= b.y;
@@ -41,7 +41,7 @@ inline t_vec3		ft_v3mul(t_vec3 a, t_vec3 b)
 	return (a);
 }
 
-inline t_vec3		ft_v3div(t_vec3 a, t_vec3 b)
+inline t_v3		ft_v3div(t_v3 a, t_v3 b)
 {
 	a.x /= b.x;
 	a.y /= b.y;

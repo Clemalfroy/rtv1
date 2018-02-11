@@ -21,12 +21,12 @@ int	rtv1(t_env *e)
 		&e->img.size_l, &e->img.endian);
 	e->hud = 1;
 	e->antialias = 1;
-	mlx_hud(e);
-	draw(e);
+	rt_mlxhud(e);
+	rt_draw(e);
 	mlx_put_image_to_window(e->mlx.mlx, e->mlx.win, e->img.img, 0, 0);
-	mlx_hook(e->mlx.win, KEYPRESS, KEYPRESSMASK, e_keyhook, e);
-	mlx_hook(e->mlx.win, KEYRELEASE, KEYRELEASEMASK, e_keyrelease, e);
-	mlx_hook(e->mlx.win, DESTROYNOTIFY, 0, e_destroy, e);
+	mlx_hook(e->mlx.win, KEYPRESS, KEYPRESSMASK, rt_onkeypress, e);
+	mlx_hook(e->mlx.win, KEYRELEASE, KEYRELEASEMASK, rt_onkeyrelease, e);
+	mlx_hook(e->mlx.win, DESTROYNOTIFY, 0, rt_ondestroy, e);
 	mlx_loop(e->mlx.mlx);
 	return (0);
 }
@@ -41,5 +41,5 @@ int	main(int argc, char **argv)
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
 		return (ft_retf(EXIT_FAILURE, "%s: %e\n", argv[1], errno));
 	ft_memset(env = alloca(sizeof(t_env)), 0, sizeof(t_env));
-	return (shapeparse(env, fd, rtv1));
+	return (rt_parseobj(env, fd, rtv1));
 }

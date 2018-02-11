@@ -39,7 +39,7 @@ inline t_m4		ft_m4_identity(void)
 		ft_m1(0, 0, 0, 1)));
 }
 
-inline t_m4		ft_m4_trans(t_vec3 off)
+inline t_m4		ft_m4_trans(t_v3 off)
 {
 	return (ft_m4(
 		ft_m1(1, 0, 0, off.x),
@@ -48,7 +48,7 @@ inline t_m4		ft_m4_trans(t_vec3 off)
 		ft_m1(0, 0, 0, 1)));
 }
 
-inline t_m4		ft_m4_scale(t_vec3 scale)
+inline t_m4		ft_m4_scale(t_v3 scale)
 {
 	return (ft_m4(
 		ft_m1(scale.x, 0, 0, 0),

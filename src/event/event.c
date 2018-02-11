@@ -12,15 +12,15 @@
 
 #include "rtv1.h"
 
-inline int		e_keyrelease(int key, t_env *env)
+inline int		rt_onkeyrelease(int key, t_env *env)
 {
 	if (key == KEY_ESC)
-		mlx_exit(env, 0);
+		rt_mlxexit(env, 0);
 	return (1);
 }
 
-inline int		e_destroy(t_env *env)
+inline int		rt_ondestroy(t_env *env)
 {
-	mlx_exit(env, 0);
+	rt_mlxexit(env, 0);
 	return (0);
 }

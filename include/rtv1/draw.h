@@ -19,6 +19,6 @@
 
 struct s_env;
 
-extern int		draw(struct s_env *env);
+extern int		rt_draw(struct s_env *env);
 
 #endif

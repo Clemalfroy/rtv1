@@ -18,16 +18,12 @@
 # include "utility.h"
 
 struct s_env;
-struct t_obj;
+struct s_obj;
 
-extern int		intersect(struct s_env *env, t_vec3 ray, t_vec3 pos);
-extern double	intercylinder(struct s_env *env, struct s_obj *obj, t_vec3 ray,
-	t_vec3 pos);
-extern double	intercone(struct s_env *env, struct s_obj *obj, t_vec3 ray,
-	t_vec3 pos);
-extern double	intersphere(struct s_env *env, struct s_obj *obj, t_vec3 ray,
-	t_vec3 pos);
-extern double	interplane(struct s_env *env, struct s_obj *obj, t_vec3 ray,
-	t_vec3 pos);
+extern int		rt_intersect(struct s_env *e, t_v3 r, t_v3 p);
+extern double	rt_intercyl(struct s_env *e, struct s_obj *a, t_v3 r, t_v3 p);
+extern double	rt_intercone(struct s_env *e, struct s_obj *a, t_v3 r, t_v3 p);
+extern double	rt_interspher(struct s_env *e, struct s_obj *a, t_v3 r, t_v3 p);
+extern double	rt_interplane(struct s_env *e, struct s_obj *a, t_v3 r, t_v3 p);
 
 #endif

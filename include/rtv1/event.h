@@ -19,8 +19,8 @@
 
 struct s_env;
 
-extern int	e_keyrelease(int key, struct s_env *env);
-extern int	e_destroy(struct s_env *env);
-extern int	e_keyhook(int keycode, t_env *env);
+extern int	rt_onkeyrelease(int key, struct s_env *env);
+extern int	rt_onkeypress(int key, t_env *env);
+extern int	rt_ondestroy(struct s_env *env);
 
 #endif

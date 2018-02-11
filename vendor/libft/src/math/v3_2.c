@@ -12,22 +12,22 @@
 
 #include "libft/math/v3.h"
 
-inline float	ft_v3dot(t_vec3 a, t_vec3 b)
+inline float	ft_v3dot(t_v3 a, t_v3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-inline float	ft_v3ang(t_vec3 a, t_vec3 b)
+inline float	ft_v3ang(t_v3 a, t_v3 b)
 {
 	return (acosf(ft_v3dot(a, b) / (ft_v3len(a) * ft_v3len(b))));
 }
 
-inline float	ft_v3len(t_vec3 v)
+inline float	ft_v3len(t_v3 v)
 {
 	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-inline t_vec3	ft_v3nor(t_vec3 v)
+inline t_v3	ft_v3nor(t_v3 v)
 {
 	float n;
 

@@ -17,7 +17,7 @@
 #define SPC "specularity: "
 #define RFLT "reflexion: "
 
-inline void	mlx_hud(t_env *e)
+inline void	rt_mlxhud(t_env *e)
 {
 	int y;
 

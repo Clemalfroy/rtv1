@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   putpixel.c                                         :+:      :+:    :+:   */
+/*   rt_putpixel.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmalfroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,16 +12,16 @@
 
 #include "rtv1.h"
 
-inline void		putpixel(t_env *env, int x, int y, int color)
+inline void		rt_putpixel(t_env *env, int x, int y, int color)
 {
 	int				i;
 	unsigned int	p;
 
 	i = 0;
-	p = x * (env->img.bpp / 8) + y * (env->img.size_l);
+	p = (unsigned int)(x * (env->img.bpp / 8) + y * (env->img.size_l));
 	while (i < (env->img.bpp / 8))
 	{
-		env->img.addr[p + i] = color;
+		env->img.addr[p + i] = (char)color;
 		color >>= 8;
 		i++;
 	}

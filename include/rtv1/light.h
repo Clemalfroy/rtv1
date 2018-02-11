@@ -23,12 +23,12 @@
 # define COND2 (env->spec == 1 && env->obj[nb].type != 3)
 # define LAMBERT tab[3]
 
-extern float	specular(t_env *mlx, t_vec3 dist, float d, float lambert);
-extern void		endlight(t_obj *tmp, t_obj *light, float *tab, float d);
-extern void		lambertlight(t_env *env, int nb, float *tab);
-extern void		reflect(t_env *env, t_obj *tmp, t_vec3 *pos, float *tab);
-extern t_obj	*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos);
-extern int		ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos);
-extern float	ft_clamp(float value, float min, float max);
+extern float	rt_specular(t_env *mlx, t_v3 dist, float d, float lambert);
+extern void		rt_endlight(t_obj *tmp, t_obj *light, float *tab, float d);
+extern void		rt_lambertlight(t_env *env, int nb, float *tab);
+extern void		rt_reflect(t_env *env, t_obj *tmp, t_v3 *pos, float *tab);
+extern t_obj	*rt_refinit(t_env *env, t_obj *tmp, t_v3 *pos);
+extern int		rt_shadow(t_env *env, t_obj *tmp, t_obj *light, t_v3 pos);
+extern float	rt_clamp(float value, float min, float max);
 
 #endif

@@ -12,10 +12,11 @@
 
 #include "rtv1.h"
 
-inline int			ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
+inline int			rt_shadow(t_env *env, t_obj *tmp, t_obj *light,
+	t_v3 pos)
 {
 	t_obj	*obj;
-	t_vec3	dist;
+	t_v3	dist;
 	int		curobj;
 
 	curobj = -1;
@@ -26,13 +27,13 @@ inline int			ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
 		if ((obj = env->obj + curobj) != tmp)
 		{
 			if (obj->type == 1)
-				env->a = intercone(env, obj, dist, pos);
+				env->a = (float)rt_intercone(env, obj, dist, pos);
 			else if (obj->type == 2)
-				env->a = intercylinder(env, obj, dist, pos);
+				env->a = (float)rt_intercyl(env, obj, dist, pos);
 			else if (obj->type == 3)
-				env->a = interplane(env, obj, dist, pos);
+				env->a = (float)rt_interplane(env, obj, dist, pos);
 			else if (obj->type == 4)
-				env->a = intersphere(env, obj, dist, pos);
+				env->a = (float)rt_interspher(env, obj, dist, pos);
 			else if (obj->type == 5)
 				continue;
 			if (env->a > 0.0001 && env->a < env->t)
@@ -41,7 +42,7 @@ inline int			ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
 	return (0);
 }
 
-static t_obj		*ft_ref_inter(t_env *env, t_obj *tmp, t_vec3 pos)
+static t_obj		*ft_ref_inter(t_env *env, t_obj *tmp, t_v3 pos)
 {
 	t_obj	*obj;
 	t_obj	*tmp2;
@@ -54,13 +55,13 @@ static t_obj		*ft_ref_inter(t_env *env, t_obj *tmp, t_vec3 pos)
 		if ((obj = env->obj + curobj) != tmp)
 		{
 			if (obj->type == 1)
-				dist = intercone(env, obj, env->ref, pos);
+				dist = rt_intercone(env, obj, env->ref, pos);
 			else if (obj->type == 2)
-				dist = intercylinder(env, obj, env->ref, pos);
+				dist = rt_intercyl(env, obj, env->ref, pos);
 			else if (obj->type == 3)
-				dist = interplane(env, obj, env->ref, pos);
+				dist = rt_interplane(env, obj, env->ref, pos);
 			else if (obj->type == 4)
-				dist = intersphere(env, obj, env->ref, pos);
+				dist = rt_interspher(env, obj, env->ref, pos);
 			else if (obj->type == 5)
 				continue;
 			if (dist > 0.0001 && dist < env->t && (env->t = (float)dist))
@@ -69,7 +70,7 @@ static t_obj		*ft_ref_inter(t_env *env, t_obj *tmp, t_vec3 pos)
 	return (tmp2);
 }
 
-inline t_obj		*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos)
+inline t_obj		*rt_refinit(t_env *env, t_obj *tmp, t_v3 *pos)
 {
 	t_obj	*tmp2;
 
@@ -80,37 +81,37 @@ inline t_obj		*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos)
 	tmp2 = ft_ref_inter(env, tmp, *pos);
 	if (!tmp2)
 		return (NULL);
-	*pos = (t_vec3){pos->x + env->t * env->ref.x, pos->y +
+	*pos = (t_v3){pos->x + env->t * env->ref.x, pos->y +
 		env->t * env->ref.y, pos->z + env->t * env->ref.z};
-	env->refpos = (t_vec3){env->ref.x, env->ref.y, env->ref.z};
+	env->refpos = (t_v3){env->ref.x, env->ref.y, env->ref.z};
 	env->norm = normvec(env, tmp2, *pos);
 	return (tmp2);
 }
 
-inline void			lambertlight(t_env *env, int nb, float *tab)
+inline void			rt_lambertlight(t_env *env, int nb, float *tab)
 {
-	t_vec3	pos;
-	t_vec3	dist;
+	t_v3	pos;
+	t_v3	dist;
 	float	d;
 	int		curlight;
 
 	curlight = -1;
-	pos = (t_vec3){env->cam.pos.x + env->t * env->raydir.x, env->cam.pos.y +
+	pos = (t_v3){env->cam.pos.x + env->t * env->raydir.x, env->cam.pos.y +
 		env->t * env->raydir.y, env->cam.pos.z + env->t * env->raydir.z};
 	env->norm = normvec(env, &env->obj[nb], pos);
 	while (++curlight != env->nblight)
 	{
 		LAMBERT = 0.15;
 		dist = ft_v3sub(env->light[curlight].pos, pos);
-		d = ft_clamp((1.0 / sqrtf(sqrtf(ft_v3dot(dist, dist)))), 0.F, 1.F);
+		d = rt_clamp((float)(1.0 / sqrtf(sqrtf(ft_v3dot(dist, dist)))), 0, 1);
 		dist = ft_v3nor(dist);
-		if (ft_shadow(env, &env->obj[nb], &env->light[curlight], pos) == 0)
-			LAMBERT += ft_clamp(ft_v3dot(dist, env->norm), 0.0, 1.0);
-		endlight(&env->obj[nb], &env->light[curlight], tab, d);
-		tab[0] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;
-		tab[1] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;
-		tab[2] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;
+		if (rt_shadow(env, &env->obj[nb], &env->light[curlight], pos) == 0)
+			LAMBERT += rt_clamp(ft_v3dot(dist, env->norm), 0.0, 1.0);
+		rt_endlight(&env->obj[nb], &env->light[curlight], tab, d);
+		tab[0] += (COND2) ? rt_specular(env, dist, d, tab[3]) : 0.0;
+		tab[1] += (COND2) ? rt_specular(env, dist, d, tab[3]) : 0.0;
+		tab[2] += (COND2) ? rt_specular(env, dist, d, tab[3]) : 0.0;
 	}
-	env->refpos = (t_vec3){env->raydir.x, env->raydir.y, env->raydir.z};
-	!PREF2 ? reflect(env, &env->obj[nb], &pos, tab) : 0;
+	env->refpos = (t_v3){env->raydir.x, env->raydir.y, env->raydir.z};
+	!PREF2 ? rt_reflect(env, &env->obj[nb], &pos, tab) : 0;
 }

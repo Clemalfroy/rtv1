@@ -15,10 +15,10 @@
 
 # include "env.h"
 
-extern int	parsev3(t_vec3 *v3, char **it, char delim);
-extern int	shapeparse(t_env *env, int fd, t_rtcb *cb);
-extern int	parsecam(t_cam *cam, char **it);
-extern int	lightparse(t_env *e);
-extern int	atoio(char **it);
+extern int	rt_parsev3(t_v3 *v3, char **it, char delim);
+extern int	rt_parseobj(t_env *env, int fd, t_rtcb *cb);
+extern int	rt_parsecam(t_cam *cam, char **it);
+extern int	rt_parselgt(t_env *e);
+extern int	rt_atoio(char **it);
 
 #endif
