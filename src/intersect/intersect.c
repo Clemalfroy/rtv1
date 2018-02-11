@@ -75,8 +75,13 @@ inline double	rt_intercone(t_env *env, t_obj *tmp, t_v3 ray, t_v3 pos)
 
 inline double	rt_interplane(t_env *env, t_obj *tmp, t_v3 ray, t_v3 pos)
 {
-	env->t0 = ((ft_v3dot(tmp->rot, tmp->pos) -
-		ft_v3dot(tmp->rot, pos)) / ft_v3dot(tmp->rot, ray));
+	float a;
+
+	if ((a = ft_v3dot(tmp->rot, ray)) != 0)
+		env->t0 = ((ft_v3dot(tmp->rot, tmp->pos) -
+			ft_v3dot(tmp->rot, pos)) / a);
+	else
+		return (-1);
 	if (env->t0 < 0.0001)
 		return (-1);
 	return (env->t0);

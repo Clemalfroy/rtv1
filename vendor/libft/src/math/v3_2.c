@@ -27,7 +27,7 @@ inline float	ft_v3len(t_v3 v)
 	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-inline t_v3	ft_v3nor(t_v3 v)
+inline t_v3		ft_v3nor(t_v3 v)
 {
 	float n;
 

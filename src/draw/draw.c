@@ -93,9 +93,7 @@ inline int			rt_draw(t_env *env)
 	int			i;
 
 	i = -1;
-	mlx_destroy_image(env->mlx.mlx, env->img.img);
 	mlx_clear_window(env->mlx.mlx, env->mlx.win);
-	env->img.img = mlx_new_image(env->mlx.mlx, WTH, HGT);
 	while (++i < THREADS)
 	{
 		tab[i].i = i;
