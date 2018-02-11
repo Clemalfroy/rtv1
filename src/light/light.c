@@ -51,6 +51,7 @@ static t_obj		*ft_ref_inter(t_env *env, t_obj *tmp, t_v3 pos)
 
 	curobj = -1;
 	tmp2 = NULL;
+	dist = 0;
 	while (++curobj != env->nbobj)
 		if ((obj = env->obj + curobj) != tmp)
 		{

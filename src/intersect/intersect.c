@@ -23,15 +23,14 @@ inline double	rt_interspher(t_env *e, t_obj *tmp, t_v3 r, t_v3 pos)
 	disc = e->b * e->b - 4 * e->a * e->c;
 	if (disc < 0)
 		return (-1);
-	e->t0 = (-e->b + sqrtf(disc)) / (2 * e->a);
-	e->t1 = (-e->b - sqrtf(disc)) / (2 * e->a);
+	e->t0 = (-e->b + sqrtf((float)disc)) / (2 * e->a);
+	e->t1 = (-e->b - sqrtf((float)disc)) / (2 * e->a);
 	if (e->t0 > e->t1)
 		e->t0 = e->t1;
 	return (e->t0);
 }
 
-inline double	rt_intercyl(t_env *env, t_obj *tmp, t_v3 ray,
-	t_v3 pos)
+inline double	rt_intercyl(t_env *env, t_obj *tmp, t_v3 ray, t_v3 pos)
 {
 	double disc;
 
@@ -88,14 +87,14 @@ inline int		rt_intersect(t_env *env, t_v3 ray, t_v3 pos)
 	int		hit;
 	double	dist;
 	t_obj	*obj;
-	int		curobj;
+	int		it;
 
 	hit = -1;
-	curobj = -1;
+	it = -1;
 	env->t = 80000.0;
-	while (++curobj < env->nbobj)
+	while (++it < env->nbobj)
 	{
-		obj = &env->obj[curobj];
+		obj = &env->obj[it];
 		if (obj->type == SHAPE_CONE)
 			dist = rt_intercone(env, obj, ray, pos);
 		else if (obj->type == SHAPE_CYLINDER)
@@ -107,7 +106,7 @@ inline int		rt_intersect(t_env *env, t_v3 ray, t_v3 pos)
 		else if (obj->type == SHAPE_LIGHT)
 			continue;
 		if (dist > 0.0001 && dist < env->t && (env->t = (float)dist))
-			hit = curobj;
+			hit = it;
 	}
 	return (hit);
 }

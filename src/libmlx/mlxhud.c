@@ -21,7 +21,8 @@ inline void	rt_mlxhud(t_env *e)
 {
 	int y;
 
-	if (e->hud == 1 && !(y = 0))
+	y = 0;
+	if (e->hud == 1)
 	{
 		if ((y += 40) && e->antialias == 1)
 			MSP(e->mlx.mlx, e->mlx.win, HUDX, HGT - y, WHITE, AA "off");

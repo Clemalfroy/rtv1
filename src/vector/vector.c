@@ -18,6 +18,7 @@ inline t_v3	normvec(t_env *env, t_obj *nb, t_v3 pos)
 	t_v3	temp;
 	t_v3	temp2;
 
+	ft_memset(&norm, 0, sizeof(t_v3));
 	if (nb->type == SHAPE_CONE || nb->type == SHAPE_CYLINDER)
 	{
 		temp = ft_v3scale(nb->rot, (ft_v3dot(env->raydir, nb->rot) * env->t0 +
