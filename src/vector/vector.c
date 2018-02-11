@@ -20,9 +20,8 @@ inline t_v3	normvec(t_env *env, t_obj *nb, t_v3 pos)
 
 	if (nb->type == SHAPE_CONE || nb->type == SHAPE_CYLINDER)
 	{
-		temp = ft_v3scale(nb->rot,
-			(ft_v3dot(env->raydir, nb->rot) * env->t0
-			 + ft_v3dot(env->dist, nb->rot)));
+		temp = ft_v3scale(nb->rot, (ft_v3dot(env->raydir, nb->rot) * env->t0 +
+			ft_v3dot(env->dist, nb->rot)));
 		if (nb->type == SHAPE_CONE)
 			temp = ft_v3scale(temp, (float)(1 + pow(tanf(nb->size), 2)));
 		temp2 = ft_v3sub(pos, nb->pos);

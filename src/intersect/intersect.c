@@ -40,8 +40,8 @@ inline double	rt_intercyl(t_env *env, t_obj *tmp, t_v3 ray,
 	env->a = (float)(ft_v3dot(ray, ray) - pow(ft_v3dot(ray, tmp->rot), 2));
 	env->b = 2 * (ft_v3dot(ray, env->dist) -
 		(ft_v3dot(ray, tmp->rot) * ft_v3dot(env->dist, tmp->rot)));
-	env->c = (float)(ft_v3dot(env->dist, env->dist) -
-					 pow(ft_v3dot(env->dist, tmp->rot), 2) - pow(tmp->size, 2));
+	env->c = (float)(ft_v3dot(env->dist, env->dist) - pow(ft_v3dot(env->dist,
+		tmp->rot), 2) - pow(tmp->size, 2));
 	disc = env->b * env->b - 4 * env->a * env->c;
 	if (disc < 0)
 		return (-1);
@@ -58,12 +58,12 @@ inline double	rt_intercone(t_env *env, t_obj *tmp, t_v3 ray, t_v3 pos)
 
 	env->dist = ft_v3sub(pos, tmp->pos);
 	tmp->rot = ft_v3nor(tmp->rot);
-	env->a = (float)(ft_v3dot(ray, ray) - (1 + pow(tanf(tmp->size), 2)) *
-										  pow(ft_v3dot(ray, tmp->rot), 2));
-	env->b = (float)(2 * (ft_v3dot(ray, env->dist) - (1 + pow(tanf(tmp->size), 2))
-			 * ft_v3dot(ray, tmp->rot) * ft_v3dot(env->dist, tmp->rot)));
-	env->c = (float)(ft_v3dot(env->dist, env->dist) - (1 +
-		   pow(tanf(tmp->size), 2)) * pow(ft_v3dot(env->dist, tmp->rot), 2));
+	env->a = (float)(ft_v3dot(ray, ray) - (1 + pow(tanf(tmp->size),
+		2)) * pow(ft_v3dot(ray, tmp->rot), 2));
+	env->b = (float)(2 * (ft_v3dot(ray, env->dist) - (1 + pow(tanf(tmp->size),
+		2)) * ft_v3dot(ray, tmp->rot) * ft_v3dot(env->dist, tmp->rot)));
+	env->c = (float)(ft_v3dot(env->dist, env->dist) - (1 + pow(tanf(tmp->size),
+		2)) * pow(ft_v3dot(env->dist, tmp->rot), 2));
 	disc = env->b * env->b - 4 * env->a * env->c;
 	if (disc < 0)
 		return (-1);
