@@ -17,8 +17,8 @@
 # include <libft.h>
 
 # define MSP mlx_string_put
-# define WTH 1000
-# define HGT 1000
+# define WTH 800
+# define HGT 800
 # define HUDX (WTH + 10)
 # define WHITE 0x0FFFFFF
 
