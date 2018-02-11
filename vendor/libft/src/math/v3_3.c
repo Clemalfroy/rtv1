@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_v3_nor.c                                        :+:      :+:    :+:   */
+/*   v3_3.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,28 +12,22 @@
 
 #include "libft/math/v3.h"
 
-inline float	ft_v3dot(t_vec3 a, t_vec3 b)
+inline t_vec3	ft_v3scale(t_vec3 v, float n)
 {
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
+	t_vec3	res;
+
+	res.x = v.x * n;
+	res.y = v.y * n;
+	res.z = v.z * n;
+	return (res);
 }
 
-inline float	ft_v3ang(t_vec3 a, t_vec3 b)
+inline t_vec3	ft_v3cross(t_vec3 v1, t_vec3 v2)
 {
-	return (acosf(ft_v3dot(a, b) / (ft_v3len(a) * ft_v3len(b))));
-}
+	t_vec3	v;
 
-inline float	ft_v3len(t_vec3 v)
-{
-	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
-}
-
-inline t_vec3	ft_v3nor(t_vec3 v)
-{
-	float n;
-
-	n = (float)(1.0 / ft_v3len(v));
-	v.x *= n;
-	v.y *= n;
-	v.z *= n;
+	v.x = v1.y * v2.z - v1.z * v2.y;
+	v.y = v1.z * v2.x - v1.x * v2.z;
+	v.z = v1.x * v2.y - v1.y * v2.x;
 	return (v);
 }

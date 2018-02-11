@@ -26,15 +26,15 @@ static void			setray(t_env *env, float *tab, double x, double y)
 
 	u = (WTH - (double)x * 2.0) / HGT;
 	v = (HGT - (double)y * 2.0) / WTH;
-	env->k = vec3_sub(&env->cam.dir, &env->cam.pos);
-	vec3_norm(&env->k);
-	env->i = vec3_cross(&env->k, &(t_vec3){0.0, 1.0, 0.0});
-	vec3_norm(&env->i);
-	env->j = vec3_cross(&env->i, &env->k);
+	env->k = ft_v3sub(env->cam.dir, env->cam.pos);
+	env->k = ft_v3nor(env->k);
+	env->i = ft_v3cross(env->k, (t_vec3){0.0, 1.0, 0.0});
+	env->i = ft_v3nor(env->i);
+	env->j = ft_v3cross(env->i, env->k);
 	env->raydir = (t_vec3){(u * env->i.x + v * env->j.x + FOV *
 		env->k.x), (u * env->i.y + v * env->j.y + FOV * env->k.y),
 		(u * env->i.z + v * env->j.z + FOV * env->k.z)};
-	vec3_norm(&env->raydir);
+	env->raydir = ft_v3nor(env->raydir);
 	ft_fzero(tab, 4);
 }
 

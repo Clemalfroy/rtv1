@@ -31,5 +31,7 @@ extern float		ft_v3dot(t_vec3 a, t_vec3 b);
 extern float		ft_v3ang(t_vec3 a, t_vec3 b);
 extern float		ft_v3len(t_vec3 a);
 extern t_vec3		ft_v3nor(t_vec3 a);
+extern t_vec3		ft_v3scale(t_vec3 v, float n);
+extern t_vec3		ft_v3cross(t_vec3 v1, t_vec3 v2);
 
 #endif

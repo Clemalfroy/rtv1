@@ -19,9 +19,9 @@ inline int			ft_shadow(t_env *env, t_obj *tmp, t_obj *light, t_vec3 pos)
 	int		curobj;
 
 	curobj = -1;
-	dist = vec3_sub(&light->pos, &pos);
-	env->t = sqrtf(vec3_dot(&dist, &dist));
-	vec3_norm(&dist);
+	dist = ft_v3sub(light->pos, pos);
+	env->t = sqrtf(ft_v3dot(dist, dist));
+	dist = ft_v3nor(dist);
 	while (++curobj != env->nbobj)
 		if ((obj = env->obj + curobj) != tmp)
 		{
@@ -74,10 +74,9 @@ inline t_obj		*ft_ref_init(t_env *env, t_obj *tmp, t_vec3 *pos)
 	t_obj	*tmp2;
 
 	env->t = 8000.0;
-	env->ref = vec3_scale(&env->norm,
-		(2 * vec3_dot(&env->refpos, &env->norm)));
-	env->ref = vec3_sub(&env->refpos, &env->ref);
-	vec3_norm(&env->ref);
+	env->ref = ft_v3scale(env->norm, (2 * ft_v3dot(env->refpos, env->norm)));
+	env->ref = ft_v3sub(env->refpos, env->ref);
+	env->ref = ft_v3nor(env->ref);
 	tmp2 = ft_ref_inter(env, tmp, *pos);
 	if (!tmp2)
 		return (NULL);
@@ -102,11 +101,11 @@ inline void			lambertlight(t_env *env, int nb, float *tab)
 	while (++curlight != env->nblight)
 	{
 		LAMBERT = 0.15;
-		dist = vec3_sub(&env->light[curlight].pos, &pos);
-		d = ft_clamp((1.0 / sqrtf(sqrtf(vec3_dot(&dist, &dist)))), 0.F, 1.F);
-		vec3_norm(&dist);
+		dist = ft_v3sub(env->light[curlight].pos, pos);
+		d = ft_clamp((1.0 / sqrtf(sqrtf(ft_v3dot(dist, dist)))), 0.F, 1.F);
+		dist = ft_v3nor(dist);
 		if (ft_shadow(env, &env->obj[nb], &env->light[curlight], pos) == 0)
-			LAMBERT += ft_clamp(vec3_dot(&dist, &env->norm), 0.0, 1.0);
+			LAMBERT += ft_clamp(ft_v3dot(dist, env->norm), 0.0, 1.0);
 		endlight(&env->obj[nb], &env->light[curlight], tab, d);
 		tab[0] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;
 		tab[1] += (COND2) ? specular(env, dist, d, tab[3]) : 0.0;

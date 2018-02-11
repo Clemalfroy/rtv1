@@ -74,11 +74,11 @@ static int		ft_translation_add(int keycode, t_env *env)
 
 static int		translation(int keycode, t_env *env)
 {
-	K = vec3_sub(&DIR, &env->cam.pos);
-	vec3_norm(&K);
-	I = vec3_cross(&K, &(t_vec3){0.0, 1.0, 0.0});
-	vec3_norm(&I);
-	J = vec3_cross(&I, &K);
+	K = ft_v3sub(DIR, env->cam.pos);
+	K = ft_v3nor(K);
+	I = ft_v3cross(K, (t_vec3){0.0, 1.0, 0.0});
+	I = ft_v3nor(I);
+	J = ft_v3cross(I, K);
 	if (keycode == KEY_A)
 	{
 		DIR = (t_vec3){DIR.x + 3 * I.x,

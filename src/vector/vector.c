@@ -10,52 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rtv1/vector.h"
 
-t_vec3	vec3_scale(t_vec3 *v, float n)
+inline t_vec3	normvec(t_env *env, t_obj *nb, t_vec3 pos)
 {
-	t_vec3	res;
+	t_vec3	norm;
+	t_vec3	temp;
+	t_vec3	temp2;
 
-	res.x = v->x * n;
-	res.y = v->y * n;
-	res.z = v->z * n;
-	return (res);
-}
-
-t_vec3	vec3_sub(t_vec3 *v1, t_vec3 *v2)
-{
-	t_vec3	sub;
-
-	sub.x = v1->x - v2->x;
-	sub.y = v1->y - v2->y;
-	sub.z = v1->z - v2->z;
-	return (sub);
-}
-
-t_vec3	vec3_cross(t_vec3 *v1, t_vec3 *v2)
-{
-	t_vec3	v;
-
-	v.x = v1->y * v2->z - v1->z * v2->y;
-	v.y = v1->z * v2->x - v1->x * v2->z;
-	v.z = v1->x * v2->y - v1->y * v2->x;
-	return (v);
-}
-
-void	vec3_norm(t_vec3 *v)
-{
-	double	n;
-
-	n = 1.0 / sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
-	v->x *= n;
-	v->y *= n;
-	v->z *= n;
-}
-
-float	vec3_dot(t_vec3 *v1, t_vec3 *v2)
-{
-	float	res;
-
-	res = v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
-	return (res);
+	if (nb->type == SHAPE_CONE || nb->type == SHAPE_CYLINDER)
+	{
+		temp = ft_v3scale(nb->rot,
+			(ft_v3dot(env->raydir, nb->rot) * env->t0
+			 + ft_v3dot(env->dist, nb->rot)));
+		if (nb->type == SHAPE_CONE)
+			temp = ft_v3scale(temp, (1 + pow(tan(nb->size), 2)));
+		temp2 = ft_v3sub(pos, nb->pos);
+		norm = ft_v3sub(temp2, temp);
+	}
+	else if (nb->type == SHAPE_PLANE)
+		norm = nb->rot;
+	if (nb->type == SHAPE_SPHERE)
+		norm = ft_v3sub(pos, nb->pos);
+	norm = ft_v3nor(norm);
+	return (norm);
 }

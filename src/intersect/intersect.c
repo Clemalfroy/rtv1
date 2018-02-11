@@ -16,10 +16,10 @@ inline double	intersphere(t_env *e, t_obj *tmp, t_vec3 r, t_vec3 pos)
 {
 	double disc;
 
-	e->dist = vec3_sub(&pos, &tmp->pos);
-	e->a = vec3_dot(&r, &r);
-	e->b = 2 * vec3_dot(&r, &e->dist);
-	e->c = vec3_dot(&e->dist, &e->dist) - (tmp->size * tmp->size);
+	e->dist = ft_v3sub(pos, tmp->pos);
+	e->a = ft_v3dot(r, r);
+	e->b = 2 * ft_v3dot(r, e->dist);
+	e->c = ft_v3dot(e->dist, e->dist) - (tmp->size * tmp->size);
 	disc = e->b * e->b - 4 * e->a * e->c;
 	if (disc < 0)
 		return (-1);
@@ -34,13 +34,13 @@ inline double	intercylinder(t_env *env, t_obj *tmp, t_vec3 ray, t_vec3 pos)
 {
 	double disc;
 
-	env->dist = vec3_sub(&pos, &tmp->pos);
-	vec3_norm(&tmp->rot);
-	env->a = vec3_dot(&ray, &ray) - pow(vec3_dot(&ray, &tmp->rot), 2);
-	env->b = 2 * (vec3_dot(&ray, &env->dist) -
-		(vec3_dot(&ray, &tmp->rot) * vec3_dot(&env->dist, &tmp->rot)));
-	env->c = vec3_dot(&env->dist, &env->dist) -
-		pow(vec3_dot(&env->dist, &tmp->rot), 2) - pow(tmp->size, 2);
+	env->dist = ft_v3sub(pos, tmp->pos);
+	tmp->rot = ft_v3nor(tmp->rot);
+	env->a = ft_v3dot(ray, ray) - pow(ft_v3dot(ray, tmp->rot), 2);
+	env->b = 2 * (ft_v3dot(ray, env->dist) -
+		(ft_v3dot(ray, tmp->rot) * ft_v3dot(env->dist, tmp->rot)));
+	env->c = ft_v3dot(env->dist, env->dist) -
+		pow(ft_v3dot(env->dist, tmp->rot), 2) - pow(tmp->size, 2);
 	disc = env->b * env->b - 4 * env->a * env->c;
 	if (disc < 0)
 		return (-1);
@@ -55,14 +55,14 @@ inline double	intercone(t_env *env, t_obj *tmp, t_vec3 ray, t_vec3 pos)
 {
 	double	disc;
 
-	env->dist = vec3_sub(&pos, &tmp->pos);
-	vec3_norm(&tmp->rot);
-	env->a = (vec3_dot(&ray, &ray) - (1 + pow(tan(tmp->size), 2)) *
-		pow(vec3_dot(&ray, &tmp->rot), 2));
-	env->b = 2 * (vec3_dot(&ray, &env->dist) - (1 + pow(tan(tmp->size), 2))
-		* vec3_dot(&ray, &tmp->rot) * vec3_dot(&env->dist, &tmp->rot));
-	env->c = vec3_dot(&env->dist, &env->dist) - (1 +
-		pow(tan(tmp->size), 2)) * pow(vec3_dot(&env->dist, &tmp->rot), 2);
+	env->dist = ft_v3sub(pos, tmp->pos);
+	tmp->rot = ft_v3nor(tmp->rot);
+	env->a = (ft_v3dot(ray, ray) - (1 + pow(tan(tmp->size), 2)) *
+		pow(ft_v3dot(ray, tmp->rot), 2));
+	env->b = 2 * (ft_v3dot(ray, env->dist) - (1 + pow(tan(tmp->size), 2))
+		* ft_v3dot(ray, tmp->rot) * ft_v3dot(env->dist, tmp->rot));
+	env->c = ft_v3dot(env->dist, env->dist) - (1 +
+		pow(tan(tmp->size), 2)) * pow(ft_v3dot(env->dist, tmp->rot), 2);
 	disc = env->b * env->b - 4 * env->a * env->c;
 	if (disc < 0)
 		return (-1);
@@ -75,8 +75,8 @@ inline double	intercone(t_env *env, t_obj *tmp, t_vec3 ray, t_vec3 pos)
 
 inline double	interplane(t_env *env, t_obj *tmp, t_vec3 ray, t_vec3 pos)
 {
-	env->t0 = ((vec3_dot(&tmp->rot, &tmp->pos) -
-		vec3_dot(&tmp->rot, &pos)) / vec3_dot(&tmp->rot, &ray));
+	env->t0 = ((ft_v3dot(tmp->rot, tmp->pos) -
+		ft_v3dot(tmp->rot, pos)) / ft_v3dot(tmp->rot, ray));
 	if (env->t0 < 0.0001)
 		return (-1);
 	return (env->t0);

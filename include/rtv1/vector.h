@@ -13,11 +13,10 @@
 #ifndef RTV1_VECTOR_H
 # define RTV1_VECTOR_H
 
-t_vec3			vec3_scale(t_vec3 *v, float n);
-t_vec3			vec3_sub(t_vec3 *v1, t_vec3 *v2);
-t_vec3			vec3_cross(t_vec3 *v1, t_vec3 *v2);
-void			vec3_norm(t_vec3 *v);
-float			vec3_dot(t_vec3 *v1, t_vec3 *v2);
+# include <libft.h>
+
+# include "env.h"
+
 extern t_vec3	normvec(t_env *env, t_obj *nb, t_vec3 pos);
 
 #endif

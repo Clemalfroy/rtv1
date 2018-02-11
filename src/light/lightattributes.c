@@ -36,11 +36,11 @@ inline void		reflect(t_env *env, t_obj *tmp, t_vec3 *pos, float *tab)
 	while (++curlight != env->nblight)
 	{
 		LAMBERT = 0.14;
-		dist = vec3_sub(&env->light[curlight].pos, pos);
-		d = ft_clamp(1.0 / sqrtf(sqrtf(vec3_dot(&dist, &dist))), 0.0, 1.0);
-		vec3_norm(&dist);
+		dist = ft_v3sub(env->light[curlight].pos, *pos);
+		d = ft_clamp(1.0 / sqrtf(sqrtf(ft_v3dot(dist, dist))), 0.0, 1.0);
+		dist = ft_v3nor(dist);
 		if (ft_shadow(env, tmp2, &env->light[curlight], *pos) == 0)
-			LAMBERT += ft_clamp(vec3_dot(&dist, &env->norm), 0.0, 1.0);
+			LAMBERT += ft_clamp(ft_v3dot(dist, env->norm), 0.0, 1.0);
 		endlight(tmp2, &env->light[curlight], tab, (float)d);
 		tab[0] += (COND1) ? specular(env, dist, (float)d, tab[3]) : 0.0;
 		tab[1] += (COND1) ? specular(env, dist, (float)d, tab[3]) : 0.0;
@@ -56,9 +56,9 @@ inline float	specular(t_env *mlx, t_vec3 dist, float d, float lambert)
 	t_vec3	ref;
 
 	spec = 0.0;
-	ref = vec3_scale(&mlx->norm, (2.0 * vec3_dot(&mlx->norm, &dist)));
-	ref = vec3_sub(&dist, &ref);
-	if ((tmp = vec3_dot(&ref, &mlx->raydir)) > 0.0 && lambert > 0.15)
+	ref = ft_v3scale(mlx->norm, (2.0 * ft_v3dot(mlx->norm, dist)));
+	ref = ft_v3sub(dist, ref);
+	if ((tmp = ft_v3dot(ref, mlx->raydir)) > 0.0 && lambert > 0.15)
 	{
 		spec = pow(tmp, 20.0) * 4 * d;
 		spec = ft_clamp(spec, 0.0, 1.0);
