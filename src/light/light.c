@@ -42,7 +42,7 @@ inline int			rt_shadow(t_env *env, t_obj *tmp, t_obj *light,
 	return (0);
 }
 
-static t_obj		*ft_ref_inter(t_env *env, t_obj *tmp, t_v3 pos)
+static t_obj		*rt_refinter(t_env *env, t_obj *tmp, t_v3 pos)
 {
 	t_obj	*obj;
 	t_obj	*tmp2;
@@ -79,7 +79,7 @@ inline t_obj		*rt_refinit(t_env *env, t_obj *tmp, t_v3 *pos)
 	env->ref = ft_v3scale(env->norm, (2 * ft_v3dot(env->refpos, env->norm)));
 	env->ref = ft_v3sub(env->refpos, env->ref);
 	env->ref = ft_v3nor(env->ref);
-	tmp2 = ft_ref_inter(env, tmp, *pos);
+	tmp2 = rt_refinter(env, tmp, *pos);
 	if (!tmp2)
 		return (NULL);
 	*pos = (t_v3){pos->x + env->t * env->ref.x, pos->y +
