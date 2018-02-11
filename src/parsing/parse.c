@@ -87,6 +87,8 @@ static inline int	parsen(int fd, size_t *n)
 			return (ft_retf(STDERR_FILENO, "rtv1: Expected EOL\n"));
 		else
 			break ;
+	if (*n == 0)
+		return (ft_retf(STDERR_FILENO, "rtv1: empty scene\n"));
 	return (YEP);
 }
 
